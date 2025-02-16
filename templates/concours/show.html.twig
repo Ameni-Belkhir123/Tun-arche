@@ -1,0 +1,34 @@
+{% extends "back/base.html.twig" %}
+
+{% block body %}
+    <h1>Concours</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ concour.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ concour.titre }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ concour.description }}</td>
+            </tr>
+            <tr>
+                <th>Datedebut</th>
+                <td>{{ concour.datedebut ? concour.datedebut|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Datefin</th>
+                <td>{{ concour.datefin ? concour.datefin|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+   <a href="{{ path('app_concours_index') }}" class="btn btn-secondary mt-3">Back to list</a>
+
+    
+{% endblock %}
