@@ -47,7 +47,7 @@
                 data-i18n="Dashboard">Dashboard</span> <span class="pc-arrow"><i
                   data-feather="chevron-right"></i></span></a>
             <ul class="pc-submenu">
-              <li class="pc-item"><a class="pc-link" href="{{path('home')}}" data-i18n="gestion concours">gestion concours</a></li>
+              <li class="pc-item"><a class="pc-link" href="{{path('home')}}" data-i18n="Default">Default</a></li>
              
             </ul>
           </li>
@@ -173,11 +173,6 @@
           </div>
         </div>
       </div><!-- [ breadcrumb ] end --><!-- [ Main Content ] start -->
-      {% block body%}
-<br>
-<br>
-
- {% endblock %}
        </div><!-- [ Main Content ] end -->
   <footer class="pc-footer">
     
@@ -331,7 +326,6 @@
       </div>
     </div>
     {% endblock %}
-
     {% block js%}
   </div><!-- [Page Specific JS] start -->
   <script data-cfasync="false" src="{{asset('back1/temp/dashboardkit.io/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js')}}"></script>

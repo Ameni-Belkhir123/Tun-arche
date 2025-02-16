@@ -1,0 +1,68 @@
+{% extends "front1/base.html.twig" %}
+
+{% block body %}
+<style>
+    .service-item {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #f8f5e1; /* Beige clair pour le bloc */
+        padding: 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .main-button a {
+        display: inline-block;
+        padding: 8px 15px;
+        border-radius: 5px;
+        background-color: #d4b38d; /* Couleur sable */
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .main-button a:hover {
+        background-color: #c19773; /* Sable plus foncé pour le survol */
+    }
+
+    .services {
+        padding: 50px 0;
+    }
+
+    .service-item h4 {
+        color: #333;
+    }
+
+    .service-item p {
+        color: #555;
+    }
+</style>
+
+<div class="services section" id="services">
+    <div class="container">
+        <div class="row">
+            {% for formation in formations %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="service-item">
+                        <div class="main-content">
+                            <h4 class="text-primary">{{ formation.titre }}</h4>
+                            <p>{{ formation.description|slice(0, 80) ~ '...' }}</p> 
+                            <div class="main-button">
+                                <a href="{{ path('app_formation_show', { 'id': formation.id }) }}">Lire Plus</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-center text-muted">Aucune formation disponible pour le moment.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

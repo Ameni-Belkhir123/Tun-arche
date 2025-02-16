@@ -1,0 +1,54 @@
+{% extends "back/base.html.twig" %}
+
+{% block navbar %}
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Formation Index</h1>
+
+        <div class="table-responsive text-center">
+            <table class="table table-bordered table-striped table-hover mx-auto" style="max-width: 90%; width: 800px;">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Titre</th>
+                        <th>Description</th>
+                        <th>Datedebut</th>
+                        <th>Datefin</th>
+                        <th>Nbrplaces</th>
+                        <th>Link</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for formation in formations %}
+                    <tr>
+                        <td>{{ formation.id }}</td>
+                        <td>{{ formation.titre }}</td>
+                        <td>{{ formation.description }}</td>
+                        <td>{{ formation.datedebut ? formation.datedebut|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ formation.datefin ? formation.datefin|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ formation.nbrplaces }}</td>
+                        <td>{{ formation.link }}</td>
+                        <td>
+                            <!-- Replace the show link with the delete form -->
+                            <form method="post" action="{{ path('app_formation_delete', {'id': formation.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');" style="display:inline;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ formation.id) }}">
+                                <button type="submit" class="btn btn-link text-danger p-0">Delete</button>
+                            </form>
+                            <a href="{{ path('app_formation_edit', {'id': formation.id}) }}" class="btn btn-link text-warning p-0">Edit</a>
+                            <a href="{{ path('app_formation_show', {'id': formation.id}) }}" class="btn btn-link text-warning p-0">show</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="8" class="text-center">No records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{{ path('app_evaluation_new') }}" class="btn btn-primary">Create New</a>
+        </div>
+    </div>
+{% endblock %}

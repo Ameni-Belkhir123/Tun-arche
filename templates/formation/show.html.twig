@@ -1,0 +1,176 @@
+{% extends "front1/base.html.twig" %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">Détails de la Formation</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg p-3 bg-light">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary fw-bold">{{ formation.titre }}</h5>
+                    <p class="card-text text-muted">{{ formation.description }}</p>
+
+                    <p><b>Début :</b> {{ formation.datedebut ? formation.datedebut|date('d/m/Y') : '-' }}</p>
+                    <p><b>Fin :</b> {{ formation.datefin ? formation.datefin|date('d/m/Y') : '-' }}</p>
+
+                    <!-- Formulaire d'évaluation -->
+                    <div class="mt-4">
+                        <h6>Laissez un commentaire et une évaluation :</h6>
+                        <form id="evaluationForm-{{ formation.id }}" class="evaluationForm">
+                            <div class="mb-3">
+                                <label class="form-label">Évaluation</label>
+                                <div class="star-rating" data-id="{{ formation.id }}">
+                                    <input type="hidden" name="evaluation" id="evaluationInput-{{ formation.id }}" value="0">
+                                    {% for i in 1..5 %}
+                                        <i class="fa fa-star" data-value="{{ i }}"></i>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="commentaire-{{ formation.id }}" class="form-label">Commentaire</label>
+                                <textarea id="commentaire-{{ formation.id }}" name="commentaire" class="form-control" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-warning text-white">Envoyer</button>
+                            <div id="message-{{ formation.id }}" class="mt-2"></div>
+                        </form>
+                    </div>
+
+                    <!-- Affichage des commentaires -->
+                    <div class="mt-4">
+                        <h5>Commentaires récents :</h5>
+                        {% if formation.evaluation|length > 0 %}
+                            {% for evaluation in formation.evaluation|slice(0, 5) %}
+                                <div class="commentaire mb-3 p-3 border rounded shadow-sm bg-white">
+                                    <div class="d-flex align-items-center">
+                                        <div class="star-rating">
+                                            {% for i in 1..5 %}
+                                                <i class="fa fa-star {% if i <= evaluation.note %}checked{% endif %}"></i>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <p class="mt-2">{{ evaluation.commentaire|e }}</p>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-muted">Aucun commentaire pour le moment.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.star-rating').forEach(starContainer => {
+        let stars = starContainer.querySelectorAll('i');
+        let input = starContainer.querySelector('input');
+
+        stars.forEach((star, index) => {
+            // Survol des étoiles
+            star.addEventListener('mouseover', function() {
+                stars.forEach((s, i) => {
+                    s.classList.toggle('checked', i <= index);
+                });
+            });
+
+            // Clic pour enregistrer la note
+            star.addEventListener('click', function() {
+                input.value = index + 1;
+                stars.forEach((s, i) => {
+                    s.classList.toggle('checked', i <= index);
+                });
+            });
+
+            // Reset après la sortie de la souris (sans clic)
+            starContainer.addEventListener('mouseleave', function() {
+                let selectedValue = input.value;
+                stars.forEach((s, i) => {
+                    s.classList.toggle('checked', i < selectedValue);
+                });
+            });
+        });
+    });
+
+    // Soumission du formulaire
+    document.querySelectorAll('.evaluationForm').forEach(form => {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            let formationId = this.id.split('-')[1];
+            let evaluation = document.getElementById('evaluationInput-' + formationId).value;
+            let commentaire = document.getElementById('commentaire-' + formationId).value;
+            let messageDiv = document.getElementById('message-' + formationId);
+
+            if (!evaluation || evaluation == "0") {
+                messageDiv.innerHTML = `<div class='alert alert-danger'>Veuillez donner une note.</div>`;
+                return;
+            }
+
+            fetch("{{ path('app_evaluation_new', {'id': formation.id}) }}", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ evaluation: evaluation, commentaire: commentaire })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    messageDiv.innerHTML = `<div class='alert alert-success'>${data.message}</div>`;
+
+                    let commentaireDiv = document.querySelector('.mt-4');
+                    let newComment = `
+                        <div class="commentaire mb-3 p-3 border rounded shadow-sm bg-white">
+                            <div class="d-flex align-items-center">
+                                <div class="star-rating">
+                                    ${[...Array(5).keys()].map(i => `<i class="fa fa-star ${i < evaluation ? 'checked' : ''}"></i>`).join('')}
+                                </div>
+                                <span class="ms-2 text-muted small">(${new Date().toLocaleString()})</span>
+                            </div>
+                            <p class="mt-2">${commentaire}</p>
+                        </div>
+                    `;
+                    commentaireDiv.insertAdjacentHTML('beforeend', newComment);
+                }
+            })
+            .catch(error => {
+                messageDiv.innerHTML = `<div class='alert alert-danger'>Une erreur est survenue.</div>`;
+            });
+        });
+    });
+});
+</script>
+
+<style>
+    .star-rating {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .star-rating i {
+        font-size: 1.5rem;
+        color: gray;
+        cursor: pointer;
+        transition: color 0.3s ease-in-out;
+    }
+
+    .star-rating i.checked {
+        color: gold;
+    }
+
+    .btn-warning {
+        background-color: #d4a76a;
+        border: none;
+    }
+
+    .bg-light {
+        background-color: #f9f5f0 !important;
+    }
+
+    .bg-white {
+        background-color: #fff !important;
+    }
+</style>
+
+{% endblock %}

@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Controller;
-
-use App\Repository\ConcoursRepository;
+use App\Repository\UserRepository;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,11 +39,7 @@ class HOME extends AbstractController
         ]);
     }
 
-    #[Route('/h1', name: 'h1')]
-    public function index31(ConcoursRepository $concoursRepository): Response
-    {
-        return $this->render('concours/affiche.html.twig', [
-            'concours' => $concoursRepository->findAll(),
-        ]);
-    }
+   
+
+
 }

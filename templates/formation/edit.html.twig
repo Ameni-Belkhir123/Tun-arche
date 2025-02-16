@@ -1,0 +1,17 @@
+{% extends "back/base.html.twig" %}
+
+{% block navbar %}
+    <h1>Edit Formation</h1>
+
+    <div style="display: flex; justify-content: center; align-items: center; height: 80vh;">
+        {{ include('formation/_form.html.twig', {'button_label': 'Update'}) }}
+    </div>
+
+    <div style="text-align: center;">
+        <a href="{{ app.request.headers.get('referer') ?: path('app_formation_index') }}">back to list</a>
+    </div>
+
+    <div style="text-align: center;">
+        {{ include('formation/_delete_form.html.twig') }}
+    </div>
+{% endblock %}
