@@ -1,0 +1,13 @@
+{% extends "back/base.html.twig"%}
+
+
+{% block body %}
+    <h1>Create new Publication</h1>
+
+    {{ include('pub/_form.html.twig') }}
+
+  <a href="{{ path('app_pub_index') }}" class="btn btn-secondary">
+    <i class="fas fa-arrow-left"></i> Back to list
+</a>
+
+{% endblock %}

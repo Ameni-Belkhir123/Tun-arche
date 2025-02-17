@@ -1,0 +1,14 @@
+{% extends "back/base.html.twig"%}
+
+{% block body %}
+    <h1>Edit Publication</h1>
+
+    {{ include('pub/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_pub_index') }}" class="btn btn-secondary btn-sm">
+    <i class="fas fa-arrow-left"></i> Back to List
+</a>
+
+
+    {{ include('pub/_delete_form.html.twig') }}
+{% endblock %}

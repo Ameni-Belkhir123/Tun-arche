@@ -1,0 +1,51 @@
+{% extends "front1/base.html.twig"%}
+
+{% block body %}
+<section id="blog-posts" class="blog-posts section">
+
+      <div class="container">
+        <div class="row gy-4">
+          {% for publication in publications %}
+          <div class="col-lg-4">
+            <article class="position-relative h-100">
+
+              <div class="post-img position-relative overflow-hidden">
+              {% if publication.image %}
+							
+                <img src="{{ asset('uploads/images/' ~ publication.image) }}" class="img-fluid" alt="">
+              {% endif %}
+                <span class="post-date">{{ publication.dateAct ? publication.dateAct|date('Y-m-d') : '' }}</span>
+              </div>
+
+              <div class="post-content d-flex flex-column">
+
+                <h3 class="post-title">{{ publication.titre }}</h3>
+
+                <div class="meta d-flex align-items-center">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-person"></i> <span class="ps-2">Julia White</span>
+                  </div>
+                  <span class="px-3 text-black-50">/</span>
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-folder2"></i> <span class="ps-2">ART</span>
+                  </div>
+                </div>
+
+                <p>
+                  {{ publication.description }}</p>
+
+                <hr>
+
+                <a href="{{path('pp', {'id': publication.id}) }}" class="readmore stretched-link"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+
+              </div>
+
+            </article>
+          </div><!-- End post list item -->
+{% endfor %}
+        </div>
+      </div>
+
+    </section>
+    
+{% endblock %}

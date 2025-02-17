@@ -1,0 +1,93 @@
+{% extends 'front1/base.html.twig' %}
+
+{% block body %}
+	
+		</div>
+
+	</div>
+	<div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
+
+		<div class="container py-5">
+
+			<div class="row g-5">
+				{% for publication in publications %}
+					<div
+						class="col-lg-8">
+						<!-- Blog Detail Start -->
+						<div class="mb-5">
+							{% if publication.image %}
+								<img class="img-fluid w-50 rounded mb-5" src="{{ asset('uploads/images/' ~ publication.image) }}" alt="">
+							{% endif %}
+							<h1 class="mb-4">{{ publication.titre }}
+								<small>
+									<h6>
+										<i>{{ publication.dateAct ? publication.dateAct|date('Y-m-d') : '' }}</i>
+									</h6>
+								</small>
+
+							</h1>
+
+
+							<p>{{ publication.description }}</p>
+						</div>
+						<!-- Blog Detail End -->
+
+						<!-- Comment List Start -->
+						<div class="mb-5">
+							<div class="section-title section-title-sm position-relative pb-3 mb-4">
+								<h3 class="mb-0"> Comments</h3>
+							</div>
+							{% for commentaire in publication.commantaires %}
+								<div class="d-flex mb-4">
+									<div class="ps-3">
+										<h6>
+											<a href="">John Doe</a>
+											
+										</h6>
+										<p>{{ commentaire.contenu }}</p>
+										
+									</div>
+								</div>
+							{% endfor %}
+
+						</div>
+						<!-- Comment List End -->
+
+						<!-- Comment Form Start -->
+						<div class="bg-light rounded p-5">
+							<div class="section-title section-title-sm position-relative pb-3 mb-4">
+								<h3 class="mb-4 text-primary fw-bold">
+    <i class="fas fa-comments"></i> Leave A Comment
+</h3>
+
+							</div>
+							<form>
+								<div class="row g-3">
+
+									<div class="col-12">
+										<textarea class="form-control bg-white border-0" rows="5" placeholder="Comment"></textarea>
+									</div>
+									<div class="col-12">
+									
+                                        <a href="{{ path('app_com_new') }}" class="btn btn-success btn-sm">
+    <i class="fas fa-plus"></i> Create New
+</a>
+
+									</div>  
+								</div>
+							</form> 
+						</div>
+						<!-- Comment Form End -->
+					</div>
+				{% endfor %}
+
+				<!-- Sidebar Start -->
+
+
+				<!-- Sidebar End -->
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}

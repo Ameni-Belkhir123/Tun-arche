@@ -1,0 +1,5 @@
+{{ form_start(form) }}
+    {{ form_widget(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+ <button class="btn btn-primary w-100 py-3">{{ button_label|default('Enregistrer') }}</button>
+
+{{ form_end(form) }}

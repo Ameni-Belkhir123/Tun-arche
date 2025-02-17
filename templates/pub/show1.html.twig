@@ -1,0 +1,109 @@
+{% extends "front1/base.html.twig" %}
+
+{% block body %}
+<section id="blog-posts" class="blog-posts section">
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-lg-4">
+                <article class="position-relative h-100">
+                    <div class="post-img position-relative overflow-hidden">
+                        {% if publication.image %}
+                            <img src="{{ asset('uploads/images/' ~ publication.image) }}" class="img-fluid" alt="">
+                        {% endif %}
+                        <span class="post-date">{{ publication.dateAct ? publication.dateAct|date('Y-m-d') : '' }}</span>
+                    </div>
+
+                    <div class="post-content d-flex flex-column">
+                        <h3 class="post-title">{{ publication.titre }}</h3>
+                        <p>{{ publication.description }}</p>
+
+                        <hr>
+
+                        <!-- ✅ Liste des commentaires -->
+                        <div class="mb-5">
+                            <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                                <h3 class="mb-0"> Comments</h3>
+                            </div>
+                            <ul id="comment-list">
+                                {% for commantaire in publication.commantaires %}
+                                    <li class="d-flex mb-4">
+                                        <div class="ps-3">
+                                            <h6><a href="">John Doe</a></h6>
+                                            <p>{{ commantaire.contenu }}</p>
+                                        </div>      
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <!-- ✅ Formulaire d'ajout de commentaire (AJAX) -->
+                        <div class="bg-light rounded p-5">
+                            <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                                <h3 class="mb-4 text-primary fw-bold">
+                                    <i class="fas fa-comments"></i> Laisser un commentaire
+                                </h3>
+                            </div>
+                            <form id="comment-form">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <textarea id="comment-content" class="form-control bg-white border-0" rows="5" placeholder="Écrire un commentaire..."></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fas fa-save"></i> Ajouter un commentaire
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </article>         
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ✅ Script AJAX -->
+<script>
+document.getElementById('comment-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Empêche le rechargement de la page
+
+    let commentContent = document.getElementById('comment-content').value.trim();
+    
+    if (commentContent === '') {
+        alert('Le commentaire ne peut pas être vide.');
+        return;
+    }
+
+    fetch('{{ path('app_com_new', { 'id': publication.id }) }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ commentaire: commentContent })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message === 'Commentaire ajouté avec succès.') {
+            let commentList = document.getElementById('comment-list');
+            let newComment = document.createElement('li');
+            newComment.className = 'd-flex mb-4';
+            newComment.innerHTML = `
+                <div class="ps-3">
+                    <h6><a href="">John Doe</a></h6>
+                    <p>${data.commentaire.contenu}</p>
+                </div>
+            `;
+            commentList.appendChild(newComment);
+
+            // Vider le champ après l'ajout
+            document.getElementById('comment-content').value = '';
+        } else {
+            alert('Erreur : ' + data.message);
+        }
+    })
+    .catch(error => console.error('Erreur:', error));
+});
+</script>
+
+{% endblock %}
