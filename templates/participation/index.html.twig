@@ -1,0 +1,65 @@
+{% extends "back/base.html.twig" %}
+
+{% block body %}
+   <br> <br> 
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nbrvotes</th>
+                <th>Date_inscription</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for participation in participations %}
+            <tr>
+                <td>{{ participation.id }}</td>
+                <td>{{ participation.nbrvotes }}</td>
+                <td>{{ participation.dateInscription ? participation.dateInscription|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_participation_show', {'id': participation.id}) }}" class="btn btn-sm btn-info">Show</a>
+                    <a href="{{ path('app_participation_edit', {'id': participation.id}) }}" class="btn btn-sm btn-warning">Edit</a>
+
+                    {# Bouton Delete qui ouvre le modal #}
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ participation.id }}">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+
+            {# Boîte de confirmation Bootstrap #}
+            <div class="modal fade" id="deleteModal{{ participation.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ participation.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel{{ participation.id }}">Confirm Deletion</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete this participation?
+                        </div>
+                        <div class="modal-footer">
+                            {# Bouton Annuler #}
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                            {# Bouton Confirmer qui envoie le formulaire #}
+                            <form method="post" action="{{ path('app_participation_delete', {'id': participation.id}) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ participation.id) }}">
+                                <button type="submit" class="btn btn-danger">Yes, delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <tr>
+                <td colspan="4">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_participation_new') }}" class="btn btn-success">Create new</a>
+{% endblock %}

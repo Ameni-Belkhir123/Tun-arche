@@ -1,0 +1,235 @@
+<div class="bgded overlay"
+    style="background-image:url('{{asset('front1/images/demo/backgrounds/la-texture-de-la-peinture-a-l-huile-sur-toile-monochrome-l-art-abstrait-arriere-plan-les-touches-de-peinture-peut-etre-utilise-comme-arriere-plan-2argfww.jpg')}}');">
+    <div id="pageintro" class="hoc clear">
+      <!-- ################################################################################################ -->
+      <article>
+        <h1 class="mot">Bienvenue </h1>
+        <footer><a class="btn" href="#">Explore</a></footer>
+      </article>
+      <!-- ################################################################################################ -->
+    </div>
+  </div>
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <div class="wrapper row3">
+    <main class="hoc container clear">
+      <!-- main body -->
+      <!-- ################################################################################################ -->
+      <section id="introblocks">
+        <ul class="nospace group btmspace-80 elements elements-four">
+          <li class="one_quarter">
+            <article><a href="#"><i class="fas fa-paint-brush"></i></a>
+              <h6 class="heading">Peinture</h6>
+              <p>L'art de créer des œuvres colorées et expressives sur toile.</p>
+            </article>
+          </li>
+          <li class="one_quarter">
+            <article><a href="#"><i class="fas fa-pencil-alt"></i></a>
+              <h6 class="heading">Dessin</h6>
+              <p>La technique de représenter visuellement des idées et des émotions.</p>
+            </article>
+          </li>
+          <li class="one_quarter">
+            <article><a href="#"><i class="fas fa-camera"></i></a>
+              <h6 class="heading">Photographie</h6>
+              <p>Capturer des moments et des émotions à travers l'objectif.</p>
+            </article>
+          </li>
+          <li class="one_quarter">
+            <article><a href="#"><i class="fas fa-tools"></i></a>
+              <h6 class="heading">Artisanat</h6>
+              <p>Créer des objets d'art en utilisant des techniques manuelles et des matériaux variés.</p>
+            </article>
+          </li>
+        </ul>
+      </section>
+      <!-- ################################################################################################ -->
+      <section class="group shout">
+        <figure class="one_half first"><img src="{{asset('front1/images/demo/istockphoto-1369317988-612x612.jpg')}}" alt="">
+          <figcaption class="heading"><a href="#">Découvrez nos Galeries </a></figcaption>
+        </figure>
+        <figure class="one_half"><img src="{{asset('front1/images/demo/eventi-online-e-webinar.webp')}}" alt="">
+          <figcaption class="heading"><a href="#">Participez à nos événements </a></figcaption>
+        </figure>
+      </section>
+      <!-- ################################################################################################ -->
+      <!-- / main body -->
+      <div class="clear"></div>
+    </main>
+  </div>
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <div class="bgded overlay light" style="background-image:url('{{asset('front1/images/demo/backgrounds/adn-innovation.webp')}}');">
+    <section id="services" class="hoc container clear">
+      <!-- ################################################################################################ -->
+      <div class="sectiontitle">
+        <h6 class="heading font-x2">Nos Formations</h6>
+      </div>
+      <ul class="nospace group elements elements-three">
+        <li class="one_third">
+          <article><a href="#"><i class="fas fa-paint-brush"></i></a>
+            <h3 class="heading">Introduction à la Peinture Acrylique</h3>
+            <p><strong>Description :</strong> Apprenez les bases de la peinture acrylique, y compris les techniques de
+              mélange des couleurs, la composition, et l'application des couches.</p>
+            <p><strong>Durée :</strong> 4 semaines</p>
+            <p><strong>Format :</strong> Cours en ligne et ateliers pratiques.</p>
+          </article>
+        </li>
+        <li class="one_third">
+          <article><a href="#"><i class="fas fa-pencil-alt"></i></a>
+            <h3 class="heading">Dessin et Illustration Numérique</h3>
+            <p><strong>Description :</strong> Explorez les outils et techniques du dessin et de l’illustration numérique
+              en utilisant des logiciels comme Adobe Photoshop ou Procreate.</p>
+            <p><strong>Durée :</strong> 6 semaines</p>
+            <p><strong>Format :</strong> Cours en ligne avec exercices pratiques.</p>
+          </article>
+        </li>
+        <li class="one_third">
+          <article><a href="#"> <i class="fas fa-camera"></i></a>
+            <h3 class="heading">Photographie Artistique</h3>
+            <p><strong>Description :</strong> Apprenez à capturer des images qui racontent une histoire, avec un accent
+              sur la composition, l'éclairage, et l'édition photographique.</p>
+            <p><strong>Durée :</strong> 5 semaines</p>
+            <p><strong>Format :</strong> Cours en présentiel et projets pratiques.</p>
+          </article>
+        </li>
+        <li class="one_third">
+          <article><a href="#"><i class="fas fa-project-diagram"></i></a>
+            <h3 class="heading">Gestion de Projet Artistique</h3>
+            <p><strong>Description :</strong> Initiez-vous aux compétences de gestion nécessaires pour gérer des projets
+              artistiques, des expositions ou des événements culturels.</p>
+            <p><strong>Durée :</strong> 5 semaines</p>
+            <p><strong>Format :</strong> Atelier en présentiel avec études de cas réels.</p>
+          </article>
+        </li>
+        <li class="one_third">
+          <article><a href="#"><i class="fas fa-paint-roller"></i></a>
+            <h3 class="heading">Design Graphique pour les Artistes</h3>
+            <p><strong>Description :</strong> Explorez les principes de design graphique essentiels pour les artistes, y
+              compris la typographie, la mise en page et la conception visuelle.</p>
+            <p><strong>Durée :</strong> 12 semaines</p>
+            <p><strong>Format :</strong> Cours en ligne avec projets pratiques.</p>
+          </article>
+        </li>
+        <li class="one_third">
+          <article><a href="#"> <i class="fas fa-heart"></i></a>
+            <h6 class="heading">Art et Thérapie</h6>
+            <p><strong>Description :</strong> Découvrez comment l'art peut être utilisé comme moyen d'expression et de
+              guérison dans des contextes thérapeutiques.</p>
+            <p><strong>Durée :</strong> 6 semaines</p>
+            <p><strong>Format :</strong> Cours en ligne avec études de cas.</p>
+          </article>
+        </li>
+      </ul>
+      <!-- ################################################################################################ -->
+    </section>
+  </div>
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <div class="wrapper gradient">
+    <div class="hoc container clear">
+      <!-- ################################################################################################ -->
+      <div class="sectiontitle">
+        <h6 class="heading font-x2">Nos Artistes</h6>
+      </div>
+      <ul class="nospace group team">
+        <li class="one_third first">
+          <figure><a class="imgover" href="#"><img src="{{asset('front1/images/demo/1590754657977.jpeg')}}" alt=""></a>
+            <figcaption><strong>Anne Marie</strong> <em>Personnel enseignant en Graphisme</em></figcaption>
+          </figure>
+        </li>
+        <li class="one_third">
+          <figure><a class="imgover" href="#"><img src="{{asset('front1/images/demo/95777.jpg')}}" alt=""></a>
+            <figcaption><strong>Jessica Thomson</strong> <em>Personnel enseignant en Dessin</em></figcaption>
+          </figure>
+        </li>
+        <li class="one_third">
+          <figure><a class="imgover" href="#"><img src="{{asset('front1/images/demo/1734347801964.jpeg')}}" alt=""></a>
+            <figcaption><strong>Alexandra Smith</strong> <em>Personnel enseignant en Peinture</em></figcaption>
+          </figure>
+        </li>
+      </ul>
+      <!-- ################################################################################################ -->
+    </div>
+  </div>
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <div class="wrapper row3">
+    <section class="hoc container clear">
+      <!-- ################################################################################################ -->
+      <div class="sectiontitle">
+        <h6 class="heading font-x2">Les derniers Creations</h6>
+      </div>
+      <ul id="latest" class="nospace group">
+        <li class="one_third first">
+          <article><a class="imgover" href="#"><img src="{{asset('front1/images/demo/p1.jpg')}}" alt=""></a>
+            <div class="excerpt">
+              <time datetime="2045-04-05T08:15+00:00">08 Apr 2024</time>
+            </div>
+          </article>
+        </li>
+        <li class="one_third">
+          <article><a class="imgover" href="#"><img src="{{asset('front1/images/demo/p2.jpg')}}" alt=""></a>
+            <div class="excerpt">
+              <time datetime="2045-04-04T08:15+00:00">05 Apr 2024</time>
+            </div>
+          </article>
+        </li>
+        <li class="one_third">
+          <article><a class="imgover" href="#"><img src="{{asset('front1/images/demo/p3.jpg')}}" alt=""></a>
+            <div class="excerpt">
+              <time datetime="2045-04-03T08:15+00:00">03 Apr 2024</time>
+            </div>
+          </article>
+        </li>
+      </ul>
+      <!-- ################################################################################################ -->
+    </section>
+  </div>
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <div class="wrapper row2">
+    <section id="ctdetails" class="hoc container clear">
+      <!-- ################################################################################################ -->
+      <div class="sectiontitle">
+        <h3 class="heading font-x2">Conractez Nous</h3>
+      </div>
+      <figure class="one_half first">
+        <ul class="nospace clear">
+          <li class="block clear"><a href="#"><i class="fas fa-phone"></i></a> <span><strong>Give us a call:</strong>
+              +216 00000000 </span></li>
+          <li class="block clear"><a href="#"><i class="fas fa-envelope"></i></a> <span><strong>Send us a mail:</strong>
+              Tun’Arche@gmail.com</span></li>
+          <li class="block clear"><a href="#"><i class="fas fa-map-marker-alt"></i></a> <span><strong>Come visit
+                us:</strong> Directions to <a href="#">our location</a></span></li>
+        </ul>
+      </figure>
+      <article class="one_half">
+        <form action="#" method="post">
+          <fieldset>
+            <legend>Newsletter:</legend>
+            <input type="text" value="" placeholder="Name">
+            <input type="text" value="" placeholder="Email">
+            <button type="submit" value="submit">Submit</button>
+          </fieldset>
+        </form>
+      </article>
+      <!-- ################################################################################################ -->
+    </section>
+  </div>
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  

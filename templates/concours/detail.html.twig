@@ -1,0 +1,31 @@
+{% extends "front1/base.html.twig" %}
+
+{% block body %}
+	<div class="container mt-5">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2">
+				<div class="card shadow-lg p-4">
+					<div class="card-body">
+						<h2 class="card-title text-center">{{ concour.titre }}</h2>
+						<p class="text-muted text-center">
+							Du
+							<strong>{{ concour.dateDebut|date('d/m/Y') }}</strong>
+							au
+							<strong>{{ concour.dateFin|date('d/m/Y') }}</strong>
+						</p>
+						<p class="card-text">{{ concour.description }}</p>
+
+						<div class="text-center mt-4">
+							<a href="{{ path('app_participer', {'id': concour.id}) }}" class="btn btn-primary">
+								Participer
+							</a>
+							<a href="{{ path('h1') }}" class="btn btn-secondary">
+								Retour à la liste
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
