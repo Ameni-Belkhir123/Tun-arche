@@ -1,0 +1,52 @@
+
+<div class="card">
+  <div class="card-header">
+    <h5>User creation form</h5>
+  </div>
+  <div class="card-body">
+    {{ form_start(form, { 'attr': { 'novalidate': 'novalidate' } }) }} <!-- Ajout de 'novalidate' -->
+      <div class="mb-3">
+        {{ form_label(form.name, 'Name:', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Enter Name'}}) }}
+          {{ form_errors(form.name) }} <!-- Affiche les erreurs de validation -->
+      </div>
+
+      <div class="mb-3">
+        {{ form_label(form.lastName, 'Last Name:', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Enter Last Name'}}) }}
+               {{ form_errors(form.lastName) }} <!-- Affiche les erreurs de validation -->
+
+      </div>
+
+      <hr class="my-4">
+
+      <div class="mb-3">
+        {{ form_label(form.email, 'Email:', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Enter Email'}}) }}
+        {{ form_errors(form.email) }} <!-- Affiche les erreurs de validation -->
+
+      </div>
+
+      <hr class="my-4">
+
+      <div class="mb-3">
+        {{ form_label(form.password, 'Password:', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.password, {'attr': {'class': 'form-control', 'placeholder': 'Enter Password'}}) }}
+                {{ form_errors(form.password) }} <!-- Affiche les erreurs de validation -->
+
+  
+      </div>
+
+       <div class="mb-3">
+        {{ form_label(form.role, 'role:', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.role, {'attr': {'class': 'form-control', 'placeholder': 'Enter role'}}) }}
+        
+      
+      </div>
+
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary">{{ button_label|default('add user') }}</button>
+      </div>
+    {{ form_end(form) }}
+  </div>
+</div>
