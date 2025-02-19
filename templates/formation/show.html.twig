@@ -14,6 +14,11 @@
                     <p><b>Début :</b> {{ formation.datedebut ? formation.datedebut|date('d/m/Y') : '-' }}</p>
                     <p><b>Fin :</b> {{ formation.datefin ? formation.datefin|date('d/m/Y') : '-' }}</p>
 
+                    <!-- Ajouter le bouton Accéder -->
+                    {% if formation.link %}
+                        <a href="{{ formation.link }}" class="btn btn-saumon mt-4" target="_blank">Accéder à la formation</a>
+                    {% endif %}
+
                     <!-- Formulaire d'évaluation -->
                     <div class="mt-4">
                         <h6>Laissez un commentaire et une évaluation :</h6>
@@ -164,12 +169,37 @@ document.addEventListener("DOMContentLoaded", function() {
         border: none;
     }
 
+    .btn-saumon {
+        background-color: #ff8f73;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1.1rem;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+        transition: background-color 0.3s ease-in-out, transform 0.3s ease;
+    }
+
+    .btn-saumon:hover {
+        background-color: #ff6b53;
+        transform: translateY(-2px);
+    }
+
     .bg-light {
         background-color: #f9f5f0 !important;
     }
 
     .bg-white {
         background-color: #fff !important;
+    }
+
+    .card {
+        border-radius: 10px;
+    }
+
+    .commentaire {
+        border-radius: 10px;
+        background-color: #f9f9f9;
     }
 </style>
 
