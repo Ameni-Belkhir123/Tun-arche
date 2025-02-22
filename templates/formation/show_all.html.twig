@@ -6,7 +6,7 @@
         transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         border-radius: 10px;
         overflow: hidden;
-        background: #f8f5e1; /* Beige clair pour le bloc */
+        background: #f8f5e1;
         padding: 20px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     }
@@ -20,7 +20,7 @@
         display: inline-block;
         padding: 8px 15px;
         border-radius: 5px;
-        background-color: #d4b38d; /* Couleur sable */
+        background-color: #d4b38d;
         color: white;
         text-decoration: none;
         font-weight: bold;
@@ -28,7 +28,7 @@
     }
 
     .main-button a:hover {
-        background-color: #c19773; /* Sable plus foncé pour le survol */
+        background-color: #c19773;
     }
 
     .services {
@@ -44,8 +44,30 @@
     }
 </style>
 
-<div class="services section" id="services">
-    <div class="container">
+<div class="container">
+    <h2 class="text-center mt-4">Nos Formations</h2>
+
+    <!-- Formulaire de recherche et tri -->
+    <form method="get" action="{{ path('app_formation_index') }}" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <input type="text" name="search" class="form-control" placeholder="Rechercher une formation..." 
+                       value="{{ app.request.query.get('search') }}">
+            </div>
+            <div class="col-md-4">
+                <select name="sort_by" class="form-control">
+                    <option value="">Trier par</option>
+                    <option value="dateDebut" {% if app.request.query.get('sort_by') == 'dateDebut' %}selected{% endif %}>Date de début</option>
+                    <option value="nbrPlaces" {% if app.request.query.get('sort_by') == 'nbrPlaces' %}selected{% endif %}>Nombre de places</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">Filtrer</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="services section" id="services">
         <div class="row">
             {% for formation in formations %}
                 <div class="col-lg-4 col-md-6 mb-4">
@@ -65,4 +87,5 @@
         </div>
     </div>
 </div>
+
 {% endblock %}

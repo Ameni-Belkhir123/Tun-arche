@@ -25,28 +25,34 @@ final class EvaluationController extends AbstractController
     }
 
     #[Route('/formation/{id}/evaluation/new', name: 'app_evaluation_new', methods: ['POST'])]
-    public function addEvaluation(Request $request, Formation $formation, EntityManagerInterface $entityManager): JsonResponse
+    public function addEvaluation(Request $request, Formation $formation, EntityManagerInterface $entityManager, EvaluationRepository $evaluationRepo): JsonResponse
    {
     $data = json_decode($request->getContent(), true);
 
+    // Vérification des données envoyées
     if (!isset($data['evaluation']) || !isset($data['commentaire'])) {
         return new JsonResponse(['message' => 'Données invalides'], Response::HTTP_BAD_REQUEST);
     }
 
+    // Créer une nouvelle évaluation (commentaire)
     $evaluation = new Evaluation();
     $evaluation->setFormation($formation);
     $evaluation->setNote($data['evaluation']);
     $evaluation->setCommentaire($data['commentaire']);
+
+    // Sauvegarder l'évaluation dans la base de données
     $entityManager->persist($evaluation);
     $entityManager->flush();
 
-    return new JsonResponse(['message' => 'Évaluation enregistrée avec succès'], Response::HTTP_OK);
+    // Récupérer toutes les évaluations liées à cette formation
+    $evaluations = $evaluationRepo->findBy(['formation' => $formation], ['id' => 'DESC']);
 
-
-        return $this->render('evaluation/new.html.twig', [
-            'evaluation' => $evaluation,
-            'form' => $form,
-        ]); 
+    // Retourner une réponse avec le succès et la liste des évaluations mises à jour
+    return new JsonResponse([
+        'success' => true,
+        'message' => 'Évaluation enregistrée avec succès',
+        'evaluations' => $evaluations, // Renvoie toutes les évaluations mises à jour
+    ], Response::HTTP_OK);
     }
 
 
