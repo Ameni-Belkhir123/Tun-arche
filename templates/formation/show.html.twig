@@ -1,206 +1,318 @@
 {% extends "front1/base.html.twig" %}
 
 {% block body %}
-<div class="container my-5">
-    <h1 class="text-center mb-4">Détails de la Formation</h1>
+    {# Définir la liste des emojis directement dans Twig #}
+    {% set emojiCategories = {
+        'Smileys': ["😊", "😍", "😎", "🤩", "😜", "😇", "🥳", "😋", "😏", "😒"],
+        'Animaux': ["🐶", "🐱", "🐼", "🦁", "🐯", "🦄", "🐝", "🦋", "🐢", "🐬"],
+        'Nourriture': ["🍕", "🍔", "🍟", "🍦", "🍩", "🍎", "🍇", "🍉", "🍓", "🍌"],
+        'Activités': ["⚽", "🏀", "🏈", "🎾", "🏓", "🎸", "🎹", "🎨", "📚", "🎮"],
+        'Voyage': ["✈️", "🚗", "🚲", "🚂", "🚀", "🛸", "🛳️", "🏰", "🏖️", "🗻"],
+        'Nature': ["🌺", "🌻", "🌴", "🌙", "⭐", "☀️", "🌧️", "⛄", "🎄", "🌋"],
+    } %}
 
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg p-3 bg-light">
-                <div class="card-body text-center">
-                    <h5 class="card-title text-primary fw-bold">{{ formation.titre }}</h5>
-                    <p class="card-text text-muted">{{ formation.description }}</p>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Détails de la Formation</h1>
 
-                    <p><b>Début :</b> {{ formation.datedebut ? formation.datedebut|date('d/m/Y') : '-' }}</p>
-                    <p><b>Fin :</b> {{ formation.datefin ? formation.datefin|date('d/m/Y') : '-' }}</p>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg p-3 bg-light">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-primary fw-bold">{{ formation.titre }}</h5>
+                        <p class="card-text text-muted">{{ formation.description }}</p>
 
-                    <!-- Ajouter le bouton Accéder -->
-                    {% if formation.link %}
-                        <a href="{{ formation.link }}" class="btn btn-saumon mt-4" target="_blank">Accéder à la formation</a>
-                    {% endif %}
+                        <p><b>Début :</b> {{ formation.datedebut ? formation.datedebut|date('d/m/Y') : '-' }}</p>
+                        <p><b>Fin :</b> {{ formation.datefin ? formation.datefin|date('d/m/Y') : '-' }}</p>
+                        <p><b>Places restantes :</b> <span id="nbrplaces">{{ formation.nbrplaces }}</span></p>
 
-                    <!-- Formulaire d'évaluation -->
-                    <div class="mt-4">
-                        <h6>Laissez un commentaire et une évaluation :</h6>
-                        <form id="evaluationForm-{{ formation.id }}" class="evaluationForm">
-                            <div class="mb-3">
-                                <label class="form-label">Évaluation</label>
-                                <div class="star-rating" data-id="{{ formation.id }}">
-                                    <input type="hidden" name="evaluation" id="evaluationInput-{{ formation.id }}" value="0">
-                                    {% for i in 1..5 %}
-                                        <i class="fa fa-star" data-value="{{ i }}"></i>
-                                    {% endfor %}
+                        <!-- Bouton Participer -->
+                        <button id="btnParticiper" class="btn btn-saumon mt-3" 
+                            {% if formation.nbrplaces == 0 %}disabled{% endif %}>
+                            {% if formation.nbrplaces > 0 %}Participer{% else %}Formation complète{% endif %}
+                        </button>
+
+                        <!-- Ajouter le bouton Accéder -->
+                        {% if formation.datedebut|date("Y-m-d") == "now"|date("Y-m-d") %}
+                            <a href="{{ formation.link }}" class="btn btn-saumon mt-4" target="_blank">Accéder à la formation</a>
+                        {% elseif formation.datedebut|date("Y-m-d") < "now"|date("Y-m-d") and formation.datefin|date("Y-m-d") < "now"|date("Y-m-d") %}
+                            <button class="btn btn-saumon mt-4" disabled>Formation terminée</button>
+                        {% else %}
+                            <button class="btn btn-saumon mt-4" disabled>Accéder à la formation</button>
+                        {% endif %}
+
+                        <!-- Formulaire d'évaluation -->
+                        <div class="mt-4">
+                            <h6>Laissez un commentaire et une évaluation :</h6>
+                            <form id="evaluationForm-{{ formation.id }}" class="evaluationForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Évaluation</label>
+                                    <div class="star-rating" data-id="{{ formation.id }}">
+                                        <input type="hidden" name="evaluation" id="evaluationInput-{{ formation.id }}" value="0">
+                                        {% for i in 1..5 %}
+                                            <i class="fa fa-star" data-value="{{ i }}"></i>
+                                        {% endfor %}
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="commentaire-{{ formation.id }}" class="form-label">Commentaire</label>
-                                <textarea id="commentaire-{{ formation.id }}" name="commentaire" class="form-control" rows="3" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-warning text-white">Envoyer</button>
-                            <div id="message-{{ formation.id }}" class="mt-2"></div>
-                        </form>
-                    </div>
+                                <div class="mb-3">
+                                    <label for="commentaire-{{ formation.id }}" class="form-label">Commentaire</label>
+                                    <textarea id="commentaire-{{ formation.id }}" name="commentaire" class="form-control" rows="3" required></textarea>
+                                    <!-- Bouton pour ouvrir le modal des emojis -->
+                                    <button type="button" class="btn btn-outline-secondary mt-2" data-bs-toggle="modal" data-bs-target="#emojiModal-{{ formation.id }}">
+                                        😊
+                                    </button>
+                                </div>
+                                <button type="submit" class="btn btn-warning text-white">Envoyer</button>
+                                <div id="message-{{ formation.id }}" class="mt-2"></div>
+                            </form>
+                        </div>
 
-                    <!-- Affichage des commentaires -->
-                    <div class="mt-4">
-                        <h5>Commentaires récents :</h5>
-                        {% if formation.evaluation|length > 0 %}
-                            {% for evaluation in formation.evaluation|slice(0, 5) %}
-                                <div class="commentaire mb-3 p-3 border rounded shadow-sm bg-white">
-                                    <div class="d-flex align-items-center">
-                                        <div class="star-rating">
-                                            {% for i in 1..5 %}
-                                                <i class="fa fa-star {% if i <= evaluation.note %}checked{% endif %}"></i>
+                        <!-- Modal pour les emojis -->
+                        <div class="modal fade" id="emojiModal-{{ formation.id }}" tabindex="-1" aria-labelledby="emojiModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="emojiModalLabel">Sélectionnez un emoji</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Liste d'emojis -->
+                                        <div class="emoji-list">
+                                            {% for category, emojis in emojiCategories %}
+                                                <h6>{{ category }}</h6>
+                                                <div class="d-flex flex-wrap">
+                                                    {% for emoji in emojis %}
+                                                        <button type="button" class="btn btn-emoji m-1" data-emoji="{{ emoji }}">
+                                                            {{ emoji }}
+                                                        </button>
+                                                    {% endfor %}
+                                                </div>
                                             {% endfor %}
                                         </div>
                                     </div>
-                                    <p class="mt-2">{{ evaluation.commentaire|e }}</p>
                                 </div>
-                            {% endfor %}
-                        {% else %}
-                            <p class="text-muted">Aucun commentaire pour le moment.</p>
-                        {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Affichage des commentaires -->
+                        <div class="mt-4" id="comments-{{ formation.id }}">
+                            <h5>Commentaires récents :</h5>
+                            {% if formation.evaluation|length > 0 %}
+                                {% for evaluation in formation.evaluation|slice(0, 5) %}
+                                    <div class="commentaire mb-3 p-3 border rounded shadow-sm bg-white">
+                                        <div class="d-flex align-items-center">
+                                            <div class="star-rating">
+                                                {% for i in 1..5 %}
+                                                    <i class="fa fa-star {% if i <= evaluation.note %}checked{% endif %}"></i>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <!-- Utiliser |raw pour afficher les emojis correctement -->
+                                        <p class="mt-2">{{ evaluation.commentaire|raw }}</p>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="text-muted">Aucun commentaire pour le moment.</p>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll('.star-rating').forEach(starContainer => {
-        let stars = starContainer.querySelectorAll('i');
-        let input = starContainer.querySelector('input');
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const btnParticiper = document.getElementById("btnParticiper");
+        const nbrPlacesSpan = document.getElementById("nbrplaces");
 
-        stars.forEach((star, index) => {
-            // Survol des étoiles
-            star.addEventListener('mouseover', function() {
-                stars.forEach((s, i) => {
-                    s.classList.toggle('checked', i <= index);
+        if (btnParticiper) {
+            btnParticiper.addEventListener("click", function() {
+                fetch("{{ path('formation_participer', {'id': formation.id}) }}", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        nbrPlacesSpan.textContent = data.nbrplaces;
+                        if (data.nbrplaces === 0) {
+                            btnParticiper.textContent = "Formation complète";
+                            btnParticiper.disabled = true;
+                        }
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("Erreur :", error);
                 });
             });
+        }
 
-            // Clic pour enregistrer la note
-            star.addEventListener('click', function() {
-                input.value = index + 1;
-                stars.forEach((s, i) => {
-                    s.classList.toggle('checked', i <= index);
+        document.querySelectorAll('.star-rating').forEach(starContainer => {
+            let stars = starContainer.querySelectorAll('i');
+            let input = starContainer.querySelector('input');
+
+            stars.forEach((star, index) => {
+                // Survol des étoiles
+                star.addEventListener('mouseover', function() {
+                    stars.forEach((s, i) => {
+                        s.classList.toggle('checked', i <= index);
+                    });
                 });
-            });
 
-            // Reset après la sortie de la souris (sans clic)
-            starContainer.addEventListener('mouseleave', function() {
-                let selectedValue = input.value;
-                stars.forEach((s, i) => {
-                    s.classList.toggle('checked', i < selectedValue);
+                // Clic pour enregistrer la note
+                star.addEventListener('click', function() {
+                    input.value = index + 1;
+                    stars.forEach((s, i) => {
+                        s.classList.toggle('checked', i <= index);
+                    });
+                });
+
+                // Reset après la sortie de la souris (sans clic)
+                starContainer.addEventListener('mouseleave', function() {
+                    let selectedValue = input.value;
+                    stars.forEach((s, i) => {
+                        s.classList.toggle('checked', i < selectedValue);
+                    });
                 });
             });
         });
-    });
 
-    // Soumission du formulaire
-    document.querySelectorAll('.evaluationForm').forEach(form => {
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            let formationId = this.id.split('-')[1];
-            let evaluation = document.getElementById('evaluationInput-' + formationId).value;
-            let commentaire = document.getElementById('commentaire-' + formationId).value;
-            let messageDiv = document.getElementById('message-' + formationId);
+        // Soumission du formulaire
+        document.querySelectorAll('.evaluationForm').forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
 
-            if (!evaluation || evaluation == "0") {
-                messageDiv.innerHTML = `<div class='alert alert-danger'>Veuillez donner une note.</div>`;
-                return;
-            }
+                let formationId = this.id.split('-')[1];
+                let evaluationInput = document.getElementById('evaluationInput-' + formationId);
+                let commentaireInput = document.getElementById('commentaire-' + formationId);
+                let messageDiv = document.getElementById('message-' + formationId);
+                let commentsSection = document.getElementById('comments-' + formationId);
 
-            fetch("{{ path('app_evaluation_new', {'id': formation.id}) }}", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ evaluation: evaluation, commentaire: commentaire })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message) {
-                    messageDiv.innerHTML = `<div class='alert alert-success'>${data.message}</div>`;
+                let evaluation = evaluationInput.value;
+                let commentaire = commentaireInput.value;
 
-                    let commentaireDiv = document.querySelector('.mt-4');
-                    let newComment = `
-                        <div class="commentaire mb-3 p-3 border rounded shadow-sm bg-white">
-                            <div class="d-flex align-items-center">
-                                <div class="star-rating">
-                                    ${[...Array(5).keys()].map(i => `<i class="fa fa-star ${i < evaluation ? 'checked' : ''}"></i>`).join('')}
-                                </div>
-                                <span class="ms-2 text-muted small">(${new Date().toLocaleString()})</span>
-                            </div>
-                            <p class="mt-2">${commentaire}</p>
-                        </div>
-                    `;
-                    commentaireDiv.insertAdjacentHTML('beforeend', newComment);
+                if (!evaluation || evaluation == "0") {
+                    messageDiv.innerHTML = `<div class='alert alert-danger'>Veuillez donner une note.</div>`;
+                    return;
                 }
-            })
-            .catch(error => {
-                messageDiv.innerHTML = `<div class='alert alert-danger'>Une erreur est survenue.</div>`;
+
+                fetch("{{ path('app_evaluation_new', {'id': formation.id}) }}", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ evaluation: evaluation, commentaire: commentaire })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        messageDiv.innerHTML = `<div class='alert alert-success'>${data.message}</div>`;
+
+                        if (commentsSection) {
+                            let newComment = document.createElement('div');
+                            newComment.classList.add('commentaire', 'mb-3', 'p-3', 'border', 'rounded', 'shadow-sm', 'bg-white');
+                            newComment.innerHTML = `
+                                <div class="d-flex align-items-center">
+                                    <div class="star-rating">
+                                        ${[...Array(5).keys()].map(i => `<i class="fa fa-star ${i < evaluation ? 'checked' : ''}"></i>`).join('')}
+                                    </div>
+                                </div>
+                                <p class="mt-2">${commentaire}</p>
+                            `;
+
+                            commentsSection.prepend(newComment);
+                        }
+
+                        evaluationInput.value = "0";
+                        commentaireInput.value = "";
+
+                    } else {
+                        messageDiv.innerHTML = `<div class='alert alert-danger'>${data.message || "Erreur lors de l'envoi."}</div>`;
+                    }
+                })
+                .catch(error => {
+                    console.error("Erreur :", error);
+                    messageDiv.innerHTML = `<div class='alert alert-danger'>Une erreur est survenue.</div>`;
+                });
+            });
+        });
+
+        // Gestion des emojis dans le modal
+        document.querySelectorAll('.btn-emoji').forEach(button => {
+            button.addEventListener('click', function() {
+                const emoji = this.getAttribute('data-emoji');
+                const commentaireInput = document.getElementById('commentaire-{{ formation.id }}');
+                commentaireInput.value += emoji;
             });
         });
     });
-});
-</script>
+    </script>
 
-<style>
-    .star-rating {
-        display: flex;
-        justify-content: center;
-        gap: 5px;
-    }
+    <style>
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
 
-    .star-rating i {
-        font-size: 1.5rem;
-        color: gray;
-        cursor: pointer;
-        transition: color 0.3s ease-in-out;
-    }
+        .star-rating i {
+            font-size: 1.5rem;
+            color: gray;
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+        }
 
-    .star-rating i.checked {
-        color: gold;
-    }
+        .star-rating i.checked {
+            color: gold;
+        }
 
-    .btn-warning {
-        background-color: #d4a76a;
-        border: none;
-    }
+        .btn-warning {
+            background-color: #d4a76a;
+            border: none;
+        }
 
-    .btn-saumon {
-        background-color: #ff8f73;
-        border: none;
-        padding: 10px 20px;
-        font-size: 1.1rem;
-        color: white;
-        font-weight: bold;
-        text-align: center;
-        transition: background-color 0.3s ease-in-out, transform 0.3s ease;
-    }
+        .btn-saumon {
+            background-color: #ff8f73;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease;
+        }
 
-    .btn-saumon:hover {
-        background-color: #ff6b53;
-        transform: translateY(-2px);
-    }
+        .btn-saumon:hover {
+            background-color: #ff6b53;
+            transform: translateY(-2px);
+        }
 
-    .bg-light {
-        background-color: #f9f5f0 !important;
-    }
+        .bg-light {
+            background-color: #f9f5f0 !important;
+        }
 
-    .bg-white {
-        background-color: #fff !important;
-    }
+        .bg-white {
+            background-color: #fff !important;
+        }
 
-    .card {
-        border-radius: 10px;
-    }
+        .card {
+            border-radius: 10px;
+        }
 
-    .commentaire {
-        border-radius: 10px;
-        background-color: #f9f9f9;
-    }
-</style>
+        .commentaire {
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
 
+        .emoji-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .btn-emoji {
+            font-size: 1.2rem;
+            padding: 5px 10px;
+        }
+    </style>
 {% endblock %}

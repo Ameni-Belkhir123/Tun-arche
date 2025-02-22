@@ -8,6 +8,7 @@ import './bootstrap.js';
 import './styles/app.css';
 import Rater from 'rater-js';
 import 'rater-js/dist/rater.min.css';
-
+import EmojiButton from 'emoji-button';
+import 'emoji-button/dist/emoji-button.css';
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');

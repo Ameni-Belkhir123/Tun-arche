@@ -40,4 +40,21 @@ class FormationRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function searchFormations(?string $query, ?string $sortBy): array
+{
+    $qb = $this->createQueryBuilder('f');
+
+    if ($query) {
+        $qb->andWhere('f.titre LIKE :query OR f.description LIKE :query')
+           ->setParameter('query', '%' . $query . '%');
+    }
+
+    if ($sortBy === 'datedebut') {
+        $qb->orderBy('f.datedebut', 'ASC');
+    } elseif ($sortBy === 'nbrplaces') {
+        $qb->orderBy('f.nbrplaces', 'ASC');
+    }
+
+    return $qb->getQuery()->getResult();
+}
 }
