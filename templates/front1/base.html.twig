@@ -1,312 +1,206 @@
 <!DOCTYPE html>
-<!--
-Template Name: Chillaid
-Author: <a href="https://www.os-templates.com/">OS Templates</a>
-Author URI: https://www.os-templates.com/
-Copyright: OS-Templates.com
-Licence: Free to use under our free template licence terms
-Licence URI: https://www.os-templates.com/template-terms
--->
-<html
-	lang="">
-	<!-- To declare your language - read more here: https://www.w3.org/International/questions/qa-html-language-declarations -->
+<html lang="">
 
-	<head>
-		{% block css%}
-			<title>TUN'ARCHE</title>
-			    <meta charset="utf-8">
-    <title>Startup - Startup Website Template</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
+<head>
+	{% block css %}
+		<title>TUN'ARCHE</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link href="{{asset('front1/layout/styles/layout.css')}}" rel="stylesheet" type="text/css" media="all">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+		<style>
+			/* Profile Picture */
+			.profile-pic {
+				display: inline-block;
+				vertical-align: middle;
+				width: 50px;
+				height: 50px;
+				overflow: hidden;
+				border-radius: 50%;
+			}
 
-    <!-- Favicon -->
+			.profile-pic img {
+				width: 100%;
+				height: auto;
+				object-fit: cover;
+			}
 
-<link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+			.profile-menu .dropdown-menu {
+				right: 0;
+				left: unset;
+			}
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+			.profile-menu .fa-fw {
+				margin-right: 10px;
+			}
 
-  <!-- Vendor CSS Files -->
-  <link href="{{asset('front1/assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
-  <link href="{{asset('front1/assets/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
-  <link href="{{asset('front1/assets/vendor/aos/aos.css')}}" rel="stylesheet">
-  <link href="{{asset('front1/assets/vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
-  <link href="{{asset('front1/assets/vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
+			.toggle-change::after {
+				border-top: 0;
+				border-bottom: 0.3em solid;
+			}
 
-  <!-- Main CSS File -->
-  <link href="{{asset('front1/assets/css/main.css')}}" rel="stylesheet">
+			/* Dark mode styles */
+			body.dark-mode {
+				background-color: #121212;
+				color: #ffffff;
+			}
 
-    <link href="{{asset('front1/img/favicon.ico')}}')}}" rel="icon">
+			.dark-mode .card {
+				background-color: #1e1e1e;
+				color: #ffffff;
+			}
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+			.dark-mode .navbar, .dark-mode .footer {
+				background-color: #1e1e1e;
+			}
+		</style>
+	{% endblock %}
+</head>
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+<body id="top">
+	{% block header %}
+		<div class="wrapper row1">
+			<header id="header" class="hoc clear">
+				<div id="logo" class="fl_left">
+					<a href="index.html">
+						<img src="{{asset('front1/images/logo.png')}}" alt="Logo Tun'Arche" style="height: 50px; vertical-align: middle;">
+						<h1 class="logoname" style="display: inline-block; margin-left: 10px;">TUN'ARCHE</h1>
+					</a>
+				</div>
 
-    <!-- Libraries Stylesheet -->
-    <link href="{{asset('front1/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
-    <link href="{{asset('front1/lib/animate/animate.min.css')}}" rel="stylesheet">
+				<!-- Toggle for dark/light mode -->
+				<div class="fl_right mt-3">
+					<button id="theme-toggle" class="btn btn-secondary">
+						<i class="fas fa-adjust"></i>
+					</button>
+				</div>
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{asset('front1/css/bootstrap.min.css')}}" rel="stylesheet">
+				<nav class="navbar navbar-expand-lg ">
+					<div class="container-fluid">
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+							<ul class="navbar-nav ms-auto mb-2 mb-lg-0 profile-menu">
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+										<div class="profile-pic">
+											<img src="{{asset('front1/images/ava.jpg')}}" alt="Profile Picture">
+										</div>
+									</a>
+									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<li>
+											<a class="dropdown-item" href="#">
+												<i class="fas fa-sliders-h fa-fw"></i>
+												Account</a>
+										</li>
+										<li>
+											<a class="dropdown-item" href="#">
+												<i class="fas fa-cog fa-fw"></i>
+												Settings</a>
+										</li>
+										<li>
+											<hr class="dropdown-divider">
+										</li>
+										<li>
+											<a class="dropdown-item" href="#">
+												<i class="fas fa-sign-out-alt fa-fw"></i>
+												Log Out</a>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</nav>
 
-    <!-- Template Stylesheet -->
-    <link href="{{asset('front1/css/style.css')}}" rel="stylesheet">
-			<meta charset="utf-8">
-			<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-			<link href="{{asset('front1/layout/styles/layout.css')}}" rel="stylesheet" type="text/css" media="all">
-
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-			<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-			<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-
-			<style>
-				/* Profile Picture */
-				.profile-pic {
-					display: inline-block;
-					vertical-align: middle;
-					width: 50px;
-					height: 50px;
-					overflow: hidden;
-					border-radius: 50%;
-				}
-
-				.profile-pic img {
-					width: 100%;
-					height: auto;
-					object-fit: cover;
-				}
-
-				.profile-menu .dropdown-menu {
-					right: 0;
-					left: unset;
-				}
-
-				.profile-menu .fa-fw {
-					margin-right: 10px;
-				}
-
-				.toggle-change::after {
-					border-top: 0;
-					border-bottom: 0.3em solid;
-				}
-			</style>
-
-		</head>
+				<nav id="mainav" class="fl_right">
+					<ul class="clear">
+						<li><a href="index.html">Home</a></li>
+						<li><a href="#">Formations</a></li>
+						<li><a href="#">Galeries</a></li>
+						<li><a href="#">Concours</a></li>
+						<li><a href="#">Evenements</a></li>
+						<li><a href="#">Blog</a></li>
+					</ul>
+				</nav>
+			</header>
+		</div>
+		<br><br><br><br><br>
 	{% endblock %}
 
-	<body id="top">
-
-		<!-- ################################################################################################ -->
-		<!-- ################################################################################################ -->
-		<!-- ################################################################################################ -->
-
-
-			{% block header%}
-				<div class="wrapper row1"> <header id="header" class="hoc clear">
-					<div id="logo" class="fl_left">
-						<a href="index.html">
-							<img src="{{asset('front1/images/logo.png')}}" alt="Logo Tun'Arche" style="height: 50px; vertical-align: middle;">
-							<h1 class="logoname" style="display: inline-block; margin-left: 10px;">TUN'ARCHE</h1>
-						</a>
-					</div>
-
-					<nav class="navbar navbar-expand-lg ">
-						<div class="container-fluid">
-
-							<div class="collapse navbar-collapse" id="navbarSupportedContent">
-								<ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-								<ul class="navbar-nav ms-auto mb-2 mb-lg-0 profile-menu">
-									<li class="nav-item dropdown">
-										<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-											<div class="profile-pic">
-												<img src="{{asset('front1/images/ava.jpg')}}" alt="Profile Picture">
-											</div>
-											<!-- You can also use icon as follows: -->
-											<!--  <i class="fas fa-user"></i> -->
-										</a>
-										<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-											<li>
-												<a class="dropdown-item" href="#">
-													<i class="fas fa-sliders-h fa-fw"></i>
-													Account</a>
-											</li>
-											<li>
-												<a class="dropdown-item" href="#">
-													<i class="fas fa-cog fa-fw"></i>
-													Settings</a>
-											</li>
-											<li>
-												<hr class="dropdown-divider">
-											</li>
-											<li>
-												<a class="dropdown-item" href="#">
-													<i class="fas fa-sign-out-alt fa-fw"></i>
-													Log Out</a>
-											</li>
-										</ul>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</nav>
-
-
-					<!-- <div id="logo" class="fl_left"> 
-					      // ################################################################################################ -->
-					<!--<h1 class="logoname"><a href="index.html">TUN'ARCHE</a></h1> -->
-					<!--</div> -->
-
-						<nav
-						id="mainav" class="fl_right"> <!-- ################################################################################################ -->
-						<ul class="clear">
-							<li>
-								<a href="index.html">Home</a>
-							</li>
-							<li>
-								<a href="#">Formations</a>
-							</li>
-							<li>
-								<a href="#">Galeries</a>
-							</li>
-							<li>
-								<a href="#">Concours</a>
-							</li>
-							<li>
-								<a href="#">Evenements</a>
-							</li>
-							<li>
-								<a href="#">Blog</a>
-							</li>
-
-
-						</ul>
-
-
-						<!-- ################################################################################################ -->
-					</nav>
-				</header>
+	{% block body %}
+		<!-- Toggle for dark/light mode -->
+		<div class="container mt-3">
+			<div class="d-flex justify-content-end">
+				<button id="theme-toggle" class="btn btn-secondary">
+					<i class="fas fa-adjust"></i>
+				</button>
 			</div>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
+		</div>
+		{# Contenu de la page dynamique à ajouter ici #}
+	{% endblock %}
 
-		{% endblock %}
-		<!-- ################################################################################################ -->
-		<!-- ################################################################################################ -->
-		<!-- ################################################################################################ -->
-		{% block body %}
-			{# Contenu de la page dynamique à ajouter ici #}
-		{% endblock %}
+	{% block footer %}
+		<div class="bgded overlay row4" style="background-image:url('{{asset('front1/images/demo/backgrounds/twill.jpg')}}');">
+			<footer id="footer" class="hoc clear">
+				<div class="one_quarter first">
+					<h1 class="logoname">
+						<a href="{{asset('front1/index.html')}}">Tun’Arche</a>
+					</h1>
+					<ul class="faico clear">
+						<li><a class="faicon-facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+						<li><a class="faicon-google-plus" href="#"><i class="fab fa-google-plus-g"></i></a></li>
+						<li><a class="faicon-linkedin" href="#"><i class="fab fa-linkedin"></i></a></li>
+						<li><a class="faicon-twitter" href="#"><i class="fab fa-twitter"></i></a></li>
+						<li><a class="faicon-vk" href="#"><i class="fab fa-vk"></i></a></li>
+					</ul>
+				</div>
+			</footer>
+		</div>
+	{% endblock %}
 
-		{% block footer%}
-			<div class="bgded overlay row4" style="background-image:url('{{asset('front1/images/demo/backgrounds/twill.jpg')}}');">
-				<footer
-					id="footer" class="hoc clear">
-					<!-- ################################################################################################ -->
-					<div class="one_quarter first">
-						<h1 class="logoname">
-							<a href="{{asset('front1/index.html')}}">Tun’Arche</a>
-						</h1>
-						<ul class="faico clear">
-							<li>
-								<a class="faicon-facebook" href="#">
-									<i class="fab fa-facebook"></i>
-								</a>
-							</li>
-							<li>
-								<a class="faicon-google-plus" href="#">
-									<i class="fab fa-google-plus-g"></i>
-								</a>
-							</li>
-							<li>
-								<a class="faicon-linkedin" href="#">
-									<i class="fab fa-linkedin"></i>
-								</a>
-							</li>
-							<li>
-								<a class="faicon-twitter" href="#">
-									<i class="fab fa-twitter"></i>
-								</a>
-							</li>
-							<li>
-								<a class="faicon-vk" href="#">
-									<i class="fab fa-vk"></i>
-								</a>
-							</li>
-						</ul>
-					</div>
+	{% block js %}
+		<script>
+			document.querySelectorAll('.dropdown-toggle').forEach(item => {
+				item.addEventListener('click', event => {
+					if (event.target.classList.contains('dropdown-toggle')) {
+						event.target.classList.toggle('toggle-change');
+					} else if (event.target.parentElement.classList.contains('dropdown-toggle')) {
+						event.target.parentElement.classList.toggle('toggle-change');
+					}
+				})
+			});
 
-					<!-- ################################################################################################ -->
-				</footer>
-			</div>
-
-		{% endblock %}
-		<!-- ################################################################################################ -->
-		<!-- ################################################################################################ -->
-		<!-- ################################################################################################ --><div class="wrapper row5"> </div>
-		{% block js%}
-			<script>
-				document.querySelectorAll('.dropdown-toggle').forEach(item => {
-item.addEventListener('click', event => {
-
-if (event.target.classList.contains('dropdown-toggle')) {
-event.target.classList.toggle('toggle-change');
-} else if (event.target.parentElement.classList.contains('dropdown-toggle')) {
-event.target.parentElement.classList.toggle('toggle-change');
-}
-})
-})
-			</script>
-			<!-- ################################################################################################ -->
-			<!-- ################################################################################################ -->
-			<!-- ################################################################################################ -->
-				<a id="backtotop" href="#top"> <i class="fas fa-chevron-up"></i>
-			</a>
-			<!-- JAVASCRIPTS -->
-
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{asset('front1/lib/wow/wow.min.js')}}"></script>
-    <script src="{{asset('front1/lib/easing/easing.min.js')}}"></script>
-    <script src="{{asset('front1/lib/waypoints/waypoints.min.js')}}"></script>
-    <script src="{{asset('front1/lib/counterup/counterup.min.js')}}"></script>
-    <script src="{{asset('front1/lib/owlcarousel/owl.carousel.min.js')}}"></script>
-
-    <!-- Template Javascript -->
-    <script src="{{asset('front1/js/main.js')}}"></script>
-
-			<script src="{{asset('front1/layout/scripts/jquery.min.js')}}"></script>
-			<script src="{{asset('front1/layout/scripts/jquery.backtotop.js')}}"></script>
-			<script src="{{asset('front1/layout/scripts/jquery.mobilemenu.js')}}"></script>
-			<!-- Homepage specific -->
-			<script src="{{asset('front1/layout/scripts/jquery.easypiechart.min.js')}}"></script>
-			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
-
-			<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-  <script src="{{asset('front1/assets/vendor/php-email-form/validate.js')}}"></script>
-  <script src="{{asset('front1/assets/vendor/aos/aos.js')}}"></script>
-  <script src="{{asset('front1/assets/vendor/glightbox/js/glightbox.min.js')}}"></script>
-  <script src="{{asset('front1/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js')}}"></script>
-  <script src="{{asset('front1/assets/vendor/isotope-layout/isotope.pkgd.min.js')}}"></script>
-  <script src="{{asset('front1/assets/vendor/waypoints/noframework.waypoints.js')}}"></script>
-  <script src="{{asset('front1/assets/vendor/swiper/swiper-bundle.min.js')}}"></script>
-
-  <!-- Main JS File -->
-  <script src="{{asset('front1/assets/js/main.js')}}"></script>
-			<!-- / Homepage specific -->
-		{% endblock %}
-
-	</body>
+			// Toggle dark mode
+			document.getElementById('theme-toggle').addEventListener('click', function () {
+				document.body.classList.toggle('dark-mode');
+			});
+		</script>
+		<a id="backtotop" href="#top"><i class="fas fa-chevron-up"></i></a>
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="{{asset('front1/lib/wow/wow.min.js')}}"></script>
+		<script src="{{asset('front1/lib/easing/easing.min.js')}}"></script>
+		<script src="{{asset('front1/lib/waypoints/waypoints.min.js')}}"></script>
+		<script src="{{asset('front1/lib/counterup/counterup.min.js')}}"></script>
+		<script src="{{asset('front1/lib/owlcarousel/owl.carousel.min.js')}}"></script>
+		<script src="{{asset('front1/js/main.js')}}"></script>
+		<script src="{{asset('front1/layout/scripts/jquery.min.js')}}"></script>
+		<script src="{{asset('front1/layout/scripts/jquery.backtotop.js')}}"></script>
+		<script src="{{asset('front1/layout/scripts/jquery.mobilemenu.js')}}"></script>
+		<script src="{{asset('front1/layout/scripts/jquery.easypiechart.min.js')}}"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+		<script src="{{asset('front1/assets/vendor/php-email-form/validate.js')}}"></script>
+		<script src="{{asset('front1/assets/vendor/aos/aos.js')}}"></script>
+		<script src="{{asset('front1/assets/vendor/glightbox/js/glightbox.min.js')}}"></script>
+		<script src="{{asset('front1/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js')}}"></script>
+		<script src="{{asset('front1/assets/vendor/isotope-layout/isotope.pkgd.min.js')}}"></script>
+		<script src="{{asset('front1/assets/vendor/waypoints/noframework.waypoints.js')}}"></script>
+		<script src="{{asset('front1/assets/vendor/swiper/swiper-bundle.min.js')}}"></script>
+		<script src="{{asset('front1/assets/js/main.js')}}"></script>
+	{% endblock %}
+</body>
 
 </html>

@@ -10,9 +10,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Service\EmailService;
 
-final class CommantaireController extends AbstractController{
-    #[Route('/commantaire',name: 'app_commantaire_index', methods: ['GET'])]
+final class CommantaireController extends AbstractController
+{
+    private EmailService $emailService;
+
+    public function __construct(EmailService $emailService)
+    {
+        $this->emailService = $emailService;
+    }
+
+    #[Route('/commantaire', name: 'app_commantaire_index', methods: ['GET'])]
     public function index(CommantaireRepository $commantaireRepository): Response
     {
         return $this->render('commantaire/index.html.twig', [
@@ -30,6 +39,13 @@ final class CommantaireController extends AbstractController{
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($commantaire);
             $entityManager->flush();
+
+            // Envoi de l'e-mail après l'ajout du commentaire
+            $this->emailService->sendEmail(
+                'yassbenmanaa@gmail.com',
+                'Nouveau commentaire ajouté',
+                'Un nouveau commentaire a été ajouté : ' . $commantaire->getContenu()
+            );
 
             return $this->redirectToRoute('app_commantaire_index', [], Response::HTTP_SEE_OTHER);
         }

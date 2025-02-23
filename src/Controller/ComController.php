@@ -10,12 +10,19 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
+use App\Service\EmailService;
 #[Route('/com')]
 final class ComController extends AbstractController
 {
+    private EmailService $emailService;
+
+    public function __construct(EmailService $emailService)
+    {
+        $this->emailService = $emailService;
+    }
+
     // ✅ Afficher tous les commentaires
     #[Route('/', name: 'app_com_index', methods: ['GET'])]
     public function index(CommantaireRepository $commantaireRepository): Response
@@ -41,6 +48,13 @@ final class ComController extends AbstractController
 
         $entityManager->persist($commantaire);
         $entityManager->flush();
+
+        // Envoi de l'e-mail après l'ajout du commentaire
+        $this->emailService->sendEmail(
+            'yassbenmanaa@gmail.com',
+            'Nouveau commentaire ajouté',
+            'Un nouveau commentaire a été ajouté : ' . $commantaire->getContenu()
+        );
 
         return new JsonResponse([
             'message' => 'Commentaire ajouté avec succès.',

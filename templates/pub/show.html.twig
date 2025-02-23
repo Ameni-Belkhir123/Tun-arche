@@ -1,47 +1,58 @@
 {% extends "back/base.html.twig"%}
 
 {% block body %}
-    <h1>Publication</h1>
+    <div class="container mt-4">
+        <h1>Publication</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ publication.id }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ publication.titre }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ publication.description }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                {% if publication.image %}
-                <td><div class="text-center">
-                 <img src="{{ asset('uploads/images/' ~ publication.image) }}" alt="Post Image" class="img-fluid rounded post-image">
-                </div></td>
-                {% else %}
-    <p>Aucune image disponible</p>
-{% endif %}
-            </tr>
-            <tr>
-                <th>Date_act</th>
-                <td>{{ publication.dateAct ? publication.dateAct|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ publication.id }}</td>
+                </tr>
+                <tr>
+                    <th>Titre</th>
+                    <td>{{ publication.titre }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ publication.description }}</td>
+                </tr>
+                <tr>
+                    <th>Image</th>
+                    <td>
+                        {% if publication.image %}
+                            <img src="{{ asset('uploads/images/' ~ publication.image) }}" alt="Post Image" class="img-fluid rounded post-image">
+                        {% else %}
+                            <span>Aucune image disponible</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Date_act</th>
+                    <td>{{ publication.dateAct ? publication.dateAct|date('Y-m-d') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Likes</th>
+                    <td id="likes-count">{{ publication.likes }}</td>
+                </tr>
+            </tbody>
+        </table>
 
-    <a href="{{ path('app_pub_index') }}" class="btn btn-secondary btn-sm">
-    <i class="fas fa-arrow-left"></i> Back to List
-</a>
+        <div class="d-flex justify-content-between">
+            <button id="like-button" class="btn btn-primary" data-token="{{ csrf_token('like' ~ publication.id) }}">Like</button>
+            <a href="{{ path('app_pub_comments', {'id': publication.id}) }}" class="btn btn-secondary btn-sm">
+                <i class="fas fa-comments"></i> Ajouter un commentaire
+            </a>
+        </div>
 
-<a href="{{ path('app_pub_edit', {'id': publication.id}) }}" class="btn btn-warning btn-sm">
-    <i class="fas fa-edit"></i> Edit
-</a>
+        <a href="{{ path('app_pub_index') }}" class="btn btn-secondary btn-sm mt-3">
+            <i class="fas fa-arrow-left"></i> Retour à la liste
+        </a>
+        <a href="{{ path('app_pub_edit', {'id': publication.id}) }}" class="btn btn-warning btn-sm mt-3">
+            <i class="fas fa-edit"></i> Modifier
+        </a>
 
-
-    {{ include('pub/_delete_form.html.twig') }}
+        {{ include('pub/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

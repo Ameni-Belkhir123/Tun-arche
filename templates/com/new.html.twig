@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-
-<title>New Commantaire</title>
+{% extends "back/base.html.twig" %}
 
 {% block body %}
-    <h1>Create new Commantaire</h1>
+    <div class="container mt-4">
+        <h1>Create new Commantaire</h1>
 
-    {{ include('com/_form.html.twig') }}
+        {{ include('com/_form.html.twig') }}
 
-   <a href="{{ path('app_com_index') }}" class="btn btn-secondary">
-    <i class="fas fa-arrow-left"></i> Retour à la liste
-</a>
-
+        <a href="{{ path('app_com_index') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Retour à la liste
+        </a>
+    </div>
 {% endblock %}

@@ -4,48 +4,121 @@
 <section id="blog-posts" class="blog-posts section">
 
       <div class="container">
-        <div class="row gy-4">
-          {% for publication in publications %}
-          <div class="col-lg-4">
-            <article class="position-relative h-100">
+        <!-- Search bar -->
+        <div class="row mb-4">
+          <div class="col-12">
+            <form id="search-form" class="d-flex">
+              <input id="search-input" class="form-control me-2" type="search" placeholder="Rechercher des publications..." aria-label="Search">
+              <button class="btn btn-outline-success me-2" type="submit">Rechercher</button>
+              <button id="clear-search" class="btn btn-outline-danger" type="button">X</button>
+            </form>
+          </div>
+        </div>
 
+        <div class="row gy-4" id="publications-container">
+          {% set sortedPublications = publications|sort((a, b) => b.commantaires|length - a.commantaires|length) %}
+          {% set pinnedPublication = sortedPublications|first %}
+          {% set otherPublications = sortedPublications|slice(1) %}
+
+          <!-- Pinned publication -->
+          <div class="col-lg-12 mb-4">
+            <article class="position-relative h-100 bg-light p-4 rounded">
               <div class="post-img position-relative overflow-hidden">
-              {% if publication.image %}
-							
-                <img src="{{ asset('uploads/images/' ~ publication.image) }}" class="img-fluid" alt="">
-              {% endif %}
-                <span class="post-date">{{ publication.dateAct ? publication.dateAct|date('Y-m-d') : '' }}</span>
+                {% if pinnedPublication.image %}
+                  <img src="{{ asset('uploads/images/' ~ pinnedPublication.image) }}" class="img-fluid" alt="">
+                {% endif %}
+                <span class="post-date">{{ pinnedPublication.dateAct ? pinnedPublication.dateAct|date('Y-m-d') : '' }}</span>
               </div>
 
               <div class="post-content d-flex flex-column">
-
-                <h3 class="post-title">{{ publication.titre }}</h3>
-
+                <h3 class="post-title">{{ pinnedPublication.titre }}</h3>
                 <div class="meta d-flex align-items-center">
                   <div class="d-flex align-items-center">
-                    <i class="bi bi-person"></i> <span class="ps-2">Julia White</span>
+                    <i class="bi bi-person"></i> <span class="ps-2">By Admin</span>
                   </div>
                   <span class="px-3 text-black-50">/</span>
                   <div class="d-flex align-items-center">
                     <i class="bi bi-folder2"></i> <span class="ps-2">ART</span>
                   </div>
                 </div>
-
-                <p>
-                  {{ publication.description }}</p>
-
+                <p>{{ pinnedPublication.description }}</p>
                 <hr>
+                <div class="d-flex justify-content-between align-items-center">
+                  <a href="{{path('pp', {'id': pinnedPublication.id}) }}" class="readmore stretched-link"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+                  <span class="ms-3"><i class="fas fa-comments"></i> {{ pinnedPublication.commantaires|length }}</span>
+                </div>
+              </div>
+            </article>
+          </div>
 
-                <a href="{{path('pp', {'id': publication.id}) }}" class="readmore stretched-link"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
-
+          <!-- Other publications -->
+          {% for publication in otherPublications %}
+          <div class="col-lg-4">
+            <article class="position-relative h-100">
+              <div class="post-img position-relative overflow-hidden">
+                {% if publication.image %}
+                  <img src="{{ asset('uploads/images/' ~ publication.image) }}" class="img-fluid" alt="">
+                {% endif %}
+                <span class="post-date">{{ publication.dateAct ? publication.dateAct|date('Y-m-d') : '' }}</span>
               </div>
 
+              <div class="post-content d-flex flex-column">
+                <h3 class="post-title">{{ publication.titre }}</h3>
+                <div class="meta d-flex align-items-center">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-person"></i> <span class="ps-2">By Admin</span>
+                  </div>
+                  <span class="px-3 text-black-50">/</span>
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-folder2"></i> <span class="ps-2">ART</span>
+                  </div>
+                </div>
+                <p>{{ publication.description }}</p>
+                <hr>
+                <div class="d-flex justify-content-between align-items-center">
+                  <a href="{{path('pp', {'id': publication.id}) }}" class="readmore stretched-link"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+                  <span class="ms-3"><i class="fas fa-comments"></i> {{ publication.commantaires|length }}</span>
+                </div>
+              </div>
             </article>
           </div><!-- End post list item -->
-{% endfor %}
+          {% endfor %}
+        </div>
+
+        <!-- No results message -->
+        <div id="no-results" class="text-center mt-4" style="display: none;">
+          <p>Désolé, pas de publication avec ce nom.</p>
         </div>
       </div>
 
     </section>
-    
+
+    <!-- Script for search functionality -->
+    <script>
+      document.getElementById('search-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const query = document.getElementById('search-input').value.toLowerCase();
+        const publications = document.querySelectorAll('.post-title');
+        let hasResults = false;
+        publications.forEach(publication => {
+          const title = publication.textContent.toLowerCase();
+          if (title.includes(query)) {
+            publication.closest('article').style.display = 'block';
+            hasResults = true;
+          } else {
+            publication.closest('article').style.display = 'none';
+          }
+        });
+        document.getElementById('no-results').style.display = hasResults ? 'none' : 'block';
+      });
+
+      document.getElementById('clear-search').addEventListener('click', function() {
+        document.getElementById('search-input').value = '';
+        const publications = document.querySelectorAll('.post-title');
+        publications.forEach(publication => {
+          publication.closest('article').style.display = 'block';
+        });
+        document.getElementById('no-results').style.display = 'none';
+      });
+    </script>
 {% endblock %}

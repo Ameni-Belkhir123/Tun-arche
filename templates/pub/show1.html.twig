@@ -1,109 +1,294 @@
 {% extends "front1/base.html.twig" %}
 
 {% block body %}
-<section id="blog-posts" class="blog-posts section">
-    <div class="container">
-        <div class="row gy-4">
-            <div class="col-lg-4">
-                <article class="position-relative h-100">
-                    <div class="post-img position-relative overflow-hidden">
-                        {% if publication.image %}
-                            <img src="{{ asset('uploads/images/' ~ publication.image) }}" class="img-fluid" alt="">
-                        {% endif %}
-                        <span class="post-date">{{ publication.dateAct ? publication.dateAct|date('Y-m-d') : '' }}</span>
-                    </div>
+	<section id="blog-posts" class="py-5">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-8">
+					<article class="card shadow-sm p-4 position-relative">
+						<div class="text-center mb-4">
+							{% if publication.image %}
+								<img src="{{ asset('uploads/images/' ~ publication.image) }}" alt="Post Image" class="img-fluid rounded">
+							{% else %}
+								<span>Aucune image disponible</span>
+							{% endif %}
+							<span class="post-date position-absolute top-0 start-0 bg-primary text-white p-2 rounded">{{ publication.dateAct ? publication.dateAct|date('Y-m-d') : '' }}</span>
+						</div>
 
-                    <div class="post-content d-flex flex-column">
-                        <h3 class="post-title">{{ publication.titre }}</h3>
-                        <p>{{ publication.description }}</p>
+						<div class="post-content d-flex flex-column">
+							<h3 class="post-title text-center text-primary fw-bold mb-4">{{ publication.titre }}</h3>
+							<p class="post-description text-center text-secondary fs-5 mb-4">{{ publication.description }}</p>
+							<hr>
 
-                        <hr>
+							<!-- Système de notation -->
+							<div class="text-center mb-4">
+								<span class="rating">
+									<i class="fas fa-star star-icon text-muted" data-value="1"></i>
+									<i class="fas fa-star star-icon text-muted" data-value="2"></i>
+									<i class="fas fa-star star-icon text-muted" data-value="3"></i>
+									<i class="fas fa-star star-icon text-muted" data-value="4"></i>
+									<i class="fas fa-star star-icon text-muted" data-value="5"></i>
+								</span>
+							</div>
 
-                        <!-- ✅ Liste des commentaires -->
-                        <div class="mb-5">
-                            <div class="section-title section-title-sm position-relative pb-3 mb-4">
-                                <h3 class="mb-0"> Comments</h3>
-                            </div>
-                            <ul id="comment-list">
-                                {% for commantaire in publication.commantaires %}
-                                    <li class="d-flex mb-4">
-                                        <div class="ps-3">
-                                            <h6><a href="">John Doe</a></h6>
-                                            <p>{{ commantaire.contenu }}</p>
-                                        </div>      
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
+							<!-- Liste des commentaires -->
+							<div class="mb-5">
+								<div class="section-title section-title-sm position-relative pb-3 mb-4">
+									<h3 class="mb-0">Commentaires</h3>
+								</div>
+								<ul id="comment-list" class="list-group mb-4">
+									{% for commantaire in publication.commantaires %}
+										<li class="list-group-item d-flex justify-content-between align-items-center">
+											<p class="comment-content">{{ commantaire.contenu }}</p>
+											<div>
+												<i class="fas fa-heart like-comment-icon text-white" style="border: 1px solid red;"></i>
+												<a href="#" class="translate-link" data-content="{{ commantaire.contenu }}" style="text-decoration: underline;">Traduire en arabe</a>
+											</div>
+										</li>
+									{% endfor %}
+								</ul>
+							</div>
 
-                        <!-- ✅ Formulaire d'ajout de commentaire (AJAX) -->
-                        <div class="bg-light rounded p-5">
-                            <div class="section-title section-title-sm position-relative pb-3 mb-4">
-                                <h3 class="mb-4 text-primary fw-bold">
-                                    <i class="fas fa-comments"></i> Laisser un commentaire
-                                </h3>
-                            </div>
-                            <form id="comment-form">
-                                <div class="row g-3">
-                                    <div class="col-12">
-                                        <textarea id="comment-content" class="form-control bg-white border-0" rows="5" placeholder="Écrire un commentaire..."></textarea>
-                                    </div>
-                                    <div class="col-12">
-                                        <button type="submit" class="btn btn-success">
-                                            <i class="fas fa-save"></i> Ajouter un commentaire
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </article>         
-            </div>
-        </div>
-    </div>
-</section>
+							<!-- Formulaire d'ajout de commentaire (AJAX) -->
+							<div class="bg-light rounded p-5 mb-4">
+								<div class="section-title section-title-sm position-relative pb-3 mb-4">
+									<h3 class="mb-4 text-primary fw-bold">
+										<i class="fas fa-comments"></i>
+										Laisser un commentaire
+									</h3>
+								</div>
+								<form id="comment-form">
+									<div class="row g-3">
+										<div class="col-12">
+											<textarea id="comment-content" class="form-control bg-white border-0" rows="5" placeholder="Écrire un commentaire..."></textarea>
+										</div>
+										<div class="col-12 text-end">
+											<button type="submit" class="btn btn-success">
+												<i class="fas fa-save"></i>
+												Ajouter un commentaire
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
 
-<!-- ✅ Script AJAX -->
-<script>
-document.getElementById('comment-form').addEventListener('submit', function(event) {
-    event.preventDefault(); // Empêche le rechargement de la page
+							<!-- Boutons Like et Unlike -->
+							<div class="d-flex justify-content-between align-items-center mt-4">
+								<div>
+									<button id="like-button" class="btn btn-primary me-2" data-token="{{ csrf_token('like' ~ publication.id) }}">
+										<i class="fas fa-thumbs-up"></i>
+										Like
+									</button>
+									<button id="unlike-button" class="btn btn-danger" data-token="{{ csrf_token('unlike' ~ publication.id) }}">
+										<i class="fas fa-thumbs-down"></i>
+										Unlike
+									</button>
+								</div>
+								<div>
+									<span id="likes-count" class="badge bg-primary">{{ publication.likes }}</span>
+									<span id="unlikes-count" class="badge bg-danger">{{ publication.unlikes }}</span>
+									<span class="ms-3">
+										<i class="fas fa-comments"></i>
+										{{ publication.commantaires|length }}</span>
+								</div>
+							</div>
 
-    let commentContent = document.getElementById('comment-content').value.trim();
-    
-    if (commentContent === '') {
-        alert('Le commentaire ne peut pas être vide.');
-        return;
-    }
+							<!-- Bouton de partage -->
+							<div class="text-center mt-4">
+								<button id="share-button" class="btn btn-info">
+									<i class="fas fa-share-alt"></i>
+									Partager
+								</button>
+							</div>
+						</div>
+					</article>
+				</div>
+			</div>
+		</div>
+	</section>
 
-    fetch('{{ path('app_com_new', { 'id': publication.id }) }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ commentaire: commentContent })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message === 'Commentaire ajouté avec succès.') {
-            let commentList = document.getElementById('comment-list');
-            let newComment = document.createElement('li');
-            newComment.className = 'd-flex mb-4';
-            newComment.innerHTML = `
-                <div class="ps-3">
-                    <h6><a href="">John Doe</a></h6>
-                    <p>${data.commentaire.contenu}</p>
-                </div>
-            `;
-            commentList.appendChild(newComment);
+	<!-- Modal de confirmation de partage -->
+	<div id="share-modal" class="modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Confirmation de partage</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>Voulez-vous copier le lien de cette page ?</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="confirm-share">OK</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel-share">Annuler</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-            // Vider le champ après l'ajout
-            document.getElementById('comment-content').value = '';
-        } else {
-            alert('Erreur : ' + data.message);
-        }
-    })
-    .catch(error => console.error('Erreur:', error));
+	<!-- Script AJAX pour Like -->
+	<script>
+		document.getElementById('like-button').addEventListener('click', function () {
+const token = this.getAttribute('data-token');
+fetch('{{ path('app_pub_like', {'id': publication.id}) }}', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+'X-Requested-With': 'XMLHttpRequest',
+'X-CSRF-TOKEN': token
+}
+}).then(response => response.json()).then(data => {
+document.getElementById('likes-count').innerText = data.likes;
+document.getElementById('unlikes-count').innerText = data.unlikes;
+}).catch(error => console.error('Error:', error));
 });
-</script>
+	</script>
+
+	<!-- Script AJAX pour Unlike -->
+	<script>
+		document.getElementById('unlike-button').addEventListener('click', function () {
+const token = this.getAttribute('data-token');
+fetch('{{ path('app_pub_unlike', {'id': publication.id}) }}', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+'X-Requested-With': 'XMLHttpRequest',
+'X-CSRF-TOKEN': token
+}
+}).then(response => response.json()).then(data => {
+document.getElementById('likes-count').innerText = data.likes;
+document.getElementById('unlikes-count').innerText = data.unlikes;
+}).catch(error => console.error('Error:', error));
+});
+	</script>
+
+	<!-- Script AJAX pour le formulaire de commentaire -->
+	<script>
+		document.getElementById('comment-form').addEventListener('submit', function (event) {
+event.preventDefault();
+
+let commentContent = document.getElementById('comment-content').value.trim();
+
+if (commentContent === '') {
+alert('Le commentaire ne peut pas être vide.');
+return;
+}
+
+fetch('{{ path('app_com_new', { 'id': publication.id }) }}', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json'
+},
+body: JSON.stringify(
+{commentaire: commentContent}
+)
+}).then(response => response.json()).then(data => {
+if (data.message === 'Commentaire ajouté avec succès.') {
+let commentList = document.getElementById('comment-list');
+let newComment = document.createElement('li');
+newComment.className = 'list-group-item d-flex justify-content-between align-items-center';
+newComment.innerHTML = `
+						<p class="comment-content">${
+data.commentaire.contenu
+}</p>
+						<div>
+							<i class="fas fa-heart like-comment-icon text-white" style="border: 1px solid red;"></i>
+							<a href="#" class="translate-link" data-content="${
+data.commentaire.contenu
+}" style="text-decoration: underline;">Traduire en arabe</a>
+						</div>
+					`;
+commentList.appendChild(newComment);
+document.getElementById('comment-content').value = '';
+
+// Increment the comment count
+let commentCount = document.getElementById('comment-count');
+commentCount.innerText = parseInt(commentCount.innerText) + 1;
+
+// Update the small comment icon count
+document.querySelector('.fa-comments').nextSibling.textContent = ` ${
+commentCount.innerText
+}`;
+} else {
+alert('Erreur : ' + data.message);
+}
+}).catch(error => console.error('Erreur:', error));
+});
+	</script>
+
+	<!-- Script pour toggler le coeur -->
+	<script>
+		document.addEventListener('click', function (event) {
+if (event.target.closest('.like-comment-icon')) {
+event.target.classList.toggle('text-danger');
+event.target.classList.toggle('text-white');
+}
+});
+	</script>
+
+	<!-- Script pour le système de notation -->
+	<script>
+		document.querySelectorAll('.star-icon').forEach(star => {
+star.addEventListener('click', function () {
+this.classList.toggle('text-warning');
+this.classList.toggle('text-muted');
+});
+});
+	</script>
+
+	<!-- Script pour le bouton de partage -->
+	<script>
+		document.getElementById('share-button').addEventListener('click', function () {
+$('#share-modal').modal('show');
+});
+
+document.getElementById('confirm-share').addEventListener('click', function () {
+const url = window.location.href;
+navigator.clipboard.writeText(url).then(() => {
+alert('Lien copié dans le presse-papiers.');
+$('#share-modal').modal('hide');
+}).catch(err => {
+console.error('Erreur lors de la copie du lien :', err);
+});
+});
+
+document.getElementById('cancel-share').addEventListener('click', function () {
+$('#share-modal').modal('hide');
+});
+	</script>
+
+	<!-- Script pour la traduction des commentaires -->
+	<script>
+		document.addEventListener('click', function (event) {
+if (event.target.classList.contains('translate-link')) {
+event.preventDefault();
+const link = event.target;
+const originalContent = link.getAttribute('data-content');
+const commentElement = link.closest('li').querySelector('.comment-content');
+
+// Call translation API (this is a placeholder, replace with actual API call)
+fetch (`https://api.mymemory.translated.net/get?q=${
+encodeURIComponent(originalContent)
+}&langpair=fr|ar`).then(response => response.json()).then(data => {
+commentElement.textContent = data.responseData.translatedText;
+link.textContent = 'Voir l\'original';
+link.classList.remove('translate-link');
+link.classList.add('original-link');
+}).catch(error => console.error('Erreur de traduction:', error));
+} else if (event.target.classList.contains('original-link')) {
+event.preventDefault();
+const link = event.target;
+const originalContent = link.getAttribute('data-content');
+const commentElement = link.closest('li').querySelector('.comment-content');
+
+commentElement.textContent = originalContent;
+link.textContent = 'Traduire en arabe';
+link.classList.remove('original-link');
+link.classList.add('translate-link');
+}
+});
+	</script>
 
 {% endblock %}

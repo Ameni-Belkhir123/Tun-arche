@@ -1,63 +1,56 @@
 {% extends "back/base.html.twig"%}
 
 {% block body %}
-	<h1>Publication index</h1>
+    <div class="container mt-4">
+        <h1 class="mb-4">Publication Index</h1>
 
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Titre</th>
-				<th>Description</th>
-				<th>Image</th>
-				<th>Date_act</th>
-				<th>comment</th>
-				<th>actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for publication in publications %}
-				<tr>
-					<td>{{ publication.id }}</td>
-					<td>{{ publication.titre }}</td>
-					<td>{{ publication.description }}</td>
-<td>
-    {% if publication.image %}
-        <img src="{{ asset('uploads/' ~ publication.image) }}" width="100"><br>
-        <small>{{ asset('uploads/' ~ publication.image) }}</small>
-    {% else %}
-        <span>Aucune image</span>
-    {% endif %}
-</td>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Date_act</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for publication in publications %}
+                    <tr>
+                        <td>{{ publication.id }}</td>
+                        <td>{{ publication.titre }}</td>
+                        <td>{{ publication.description }}</td>
+                        <td>
+                            {% if publication.image %}
+                                <img src="{{ asset('uploads/' ~ publication.image) }}" width="100" class="img-thumbnail">
+                            {% else %}
+                                <span>Aucune image</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ publication.dateAct ? publication.dateAct|date('Y-m-d') : '' }}</td>
+                        <td>
+                            <a href="{{ path('app_pub_show', {'id': publication.id}) }}" class="btn btn-info btn-sm">
+                                <i class="fas fa-eye"></i> Show
+                            </a>
+                            <a href="{{ path('app_pub_edit', {'id': publication.id}) }}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a href="{{ path('app_pub_comments', {'id': publication.id}) }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-comments"></i> Voir les commentaires
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center">No records found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-					<td>{{ publication.dateAct ? publication.dateAct|date('Y-m-d') : '' }}</td>
-					<td>
-						{% for commentaire in publication.commantaires %}
-							<li>{{ commentaire.contenu }}
-							</li>
-						{% endfor %}
-					</td>
-					<td>
-						<a href="{{ path('app_pub_show', {'id': publication.id}) }}" class="btn btn-info btn-sm">
-    <i class="fas fa-eye"></i> Show
-</a>
-
-<a href="{{ path('app_pub_edit', {'id': publication.id}) }}" class="btn btn-warning btn-sm">
-    <i class="fas fa-edit"></i> Edit
-</a>
-
-					</td>
-				</tr>
-			{% else %}
-				<tr>
-					<td colspan="6">no records found</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-
-	<a href="{{ path('app_pub_new') }}" class="btn btn-success">
-    <i class="fas fa-plus"></i> Create New
-</a>
-
+        <a href="{{ path('app_pub_new') }}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Create New
+        </a>
+    </div>
 {% endblock %}

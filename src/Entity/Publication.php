@@ -16,9 +16,8 @@ class Publication
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
     #[ORM\Column(length: 255)]
-
-
     #[Assert\NotBlank(message: "Le titre est obligatoire.")]
     #[Assert\Length(
         min: 5,
@@ -28,7 +27,7 @@ class Publication
     )]
     private ?string $titre = null;
 
-    #[ORM\Column(length: 255)] // Type string gardé
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "La description ne peut pas être vide.")]
     #[Assert\Length(
         min: 10,
@@ -38,7 +37,7 @@ class Publication
     )]
     private ?string $description = null;
 
-    #[ORM\Column(length: 255)] // Aucune validation ajoutée ici
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -49,10 +48,16 @@ class Publication
     )]
     private ?\DateTimeInterface $date_act = null;
 
+    #[ORM\Column(type: 'integer')]
+    private int $likes = 0;
+
+    #[ORM\Column(type: 'integer')]
+    private int $unlikes = 0;
+
     /**
      * @var Collection<int, Commantaire>
      */
-    #[ORM\OneToMany(targetEntity: Commantaire::class, mappedBy: 'id_pub')]
+    #[ORM\OneToMany(targetEntity: Commantaire::class, mappedBy: 'id_pub', cascade: ['remove'], orphanRemoval: true)]
     private Collection $commantaires;
 
     public function __construct()
@@ -106,6 +111,40 @@ class Publication
     public function setDateAct(\DateTimeInterface $date_act): static
     {
         $this->date_act = $date_act;
+        return $this;
+    }
+
+    public function getLikes(): int
+    {
+        return $this->likes;
+    }
+
+    public function setLikes(int $likes): static
+    {
+        $this->likes = $likes;
+        return $this;
+    }
+
+    public function incrementLikes(): static
+    {
+        $this->likes++;
+        return $this;
+    }
+
+    public function getUnlikes(): int
+    {
+        return $this->unlikes;
+    }
+
+    public function setUnlikes(int $unlikes): static
+    {
+        $this->unlikes = $unlikes;
+        return $this;
+    }
+
+    public function incrementUnlikes(): static
+    {
+        $this->unlikes++;
         return $this;
     }
 

@@ -1,5 +1,23 @@
-{{ form_start(form) }}
-    {{ form_widget(form,{'attr': {'novalidate': 'novalidate'}} ) }}
- <button class="btn btn-primary w-100 py-3">{{ button_label|default('Enregistrer') }}</button>
-
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    <div class="form-group mb-3">
+        {{ form_label(form.titre) }}
+        {{ form_widget(form.titre, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.titre) }}
+    </div>
+    <div class="form-group mb-3">
+        {{ form_label(form.description) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.description) }}
+    </div>
+    <div class="form-group mb-3">
+        {{ form_label(form.image) }}
+        {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.image) }}
+    </div>
+    <div class="form-group mb-3">
+        {{ form_label(form.date_act) }}
+        {{ form_widget(form.date_act, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.date_act) }}
+    </div>
+    <button class="btn btn-primary w-100 py-3">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}

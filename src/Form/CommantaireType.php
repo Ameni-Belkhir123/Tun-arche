@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Form;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 use App\Entity\Commantaire;
 use App\Entity\Publication;
@@ -14,8 +15,11 @@ class CommantaireType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('contenu')
-            ->add('id_pub', EntityType::class, [
+        ->add('contenu', TextType::class, [
+            'empty_data' => '',
+            'attr' => ['placeholder' => 'Entrez votre commentaire ici'],
+        ])
+                    ->add('id_pub', EntityType::class, [
                 'class' => Publication::class,
 'choice_label' => 'id',
             ])
