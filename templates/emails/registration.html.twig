@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Welcome to Tunarche</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 20px auto;
+        background: #fff;
+        padding: 20px;
+        border: 1px solid #ddd;
+      }
+      .header {
+        text-align: center;
+      }
+      .header img {
+        max-width: 100%;
+        height: auto;
+      }
+      .content {
+        padding: 20px;
+      }
+      .footer {
+        text-align: center;
+        font-size: 12px;
+        color: #888;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <img src="https://source.unsplash.com/600x200/?professional" alt="Welcome Image">
+      </div>
+      <div class="content">
+        <h1>Hello {{ user.name }}!</h1>
+        <p>
+          You have been successfully registered to Tunarche. We’re excited to have you on board!
+        </p>
+        <p>
+          If you have any questions, please don’t hesitate to reach out to our support team.
+        </p>
+        <p>
+          Best regards,<br>
+          The Tunarche Team
+        </p>
+      </div>
+      <div class="footer">
+        &copy; {{ "now"|date("Y") }} Tunarche. All rights reserved.
+      </div>
+    </div>
+  </body>
+</html>

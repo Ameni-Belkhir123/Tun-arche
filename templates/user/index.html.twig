@@ -40,6 +40,8 @@
 											</button>
 										</form>
 									{% endif %}
+									<a href="{{ path('app_user_pdf', {'id': user.id}) }}" class="btn btn-sm btn-secondary">PDF</a>
+								</td>
 								</td>
 							</tr>
 						{% else %}
