@@ -1,3 +1,6 @@
+parameters:
+    google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+
 services:
     App\Security\AuthAuthenticator:
         arguments:

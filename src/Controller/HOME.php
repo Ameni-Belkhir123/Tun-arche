@@ -22,6 +22,13 @@ class HOME extends AbstractController
             'home' => 'home',
         ]);
     }
+    #[Route('/home2/{id}', name: 'app_user_show2', methods: ['GET'])]
+    public function show2(User $user): Response
+    {
+        return $this->render('user/userfront.html.twig', [
+            'user' => $user,
+        ]);
+    }
 
     #[Route('/home1', name: 'home1')]
     public function index1(): Response

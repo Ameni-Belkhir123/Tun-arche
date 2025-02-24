@@ -95,7 +95,7 @@ Licence URI: https://www.os-templates.com/template-terms
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="#"><i class="fas fa-sliders-h fa-fw"></i> {{ app.user.lastName }} {{ app.user.name }}</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog fa-fw"></i> Settings</a></li>
+                    <li><a class="dropdown-item"  href="{{ path('app_user_show2', {'id': app.user.id}) }}" <i class="fas fa-cog fa-fw"></i> Settings</a></li>
                     <li>
                       <hr class="dropdown-divider">
                     </li>
@@ -119,6 +119,7 @@ Licence URI: https://www.os-templates.com/template-terms
         <ul class="clear">
           <li><a href="index.html">Home</a></li>
           <li><a href="#">Formations</a>
+          
           <li><a href="#">Galeries</a></li>
           <li><a href="#">Concours</a></li>
           <li><a href="#">Evenements</a></li>
@@ -133,6 +134,9 @@ Licence URI: https://www.os-templates.com/template-terms
       </nav>
     </header>
   </div>
+    <br> <br> <br> <br> <br>
+   {% endblock %}
+    {% block body %}
   <br> <br> <br> <br> <br>
   {% endblock %}
   <!-- ################################################################################################ -->
