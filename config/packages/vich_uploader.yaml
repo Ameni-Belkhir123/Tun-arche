@@ -1,0 +1,14 @@
+vich_uploader:
+    db_driver: orm
+
+    metadata:
+        type: attribute
+
+    mappings:
+        formation:
+            uri_prefix: /uploads/images
+            upload_destination: '%kernel.project_dir%/public/uploads/images'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false  # Ne pas injecter le fichier dans l'entité lors du chargement
+            delete_on_update: true  # Supprimer l'ancien fichier lors de la mise à jour
+            delete_on_remove: true # Supprimer le fichier lors de la suppression de l'entité

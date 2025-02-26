@@ -47,6 +47,11 @@ final class FormationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($formation);
             $entityManager->flush();
+            $imageFile = $form->get('imageFile')->getData();
+            if ($imageFile) {
+                // Le fichier est déjà géré par VichUploaderBundle grâce au champ `imageFile` dans l'entité
+            }
+
 
             return $this->redirectToRoute('app_formation_index', [], Response::HTTP_SEE_OTHER);
         }

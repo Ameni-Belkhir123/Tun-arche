@@ -42,6 +42,13 @@
     .service-item p {
         color: #555;
     }
+
+    .service-item img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
 </style>
 
 <div class="container">
@@ -57,8 +64,8 @@
             <div class="col-md-4">
                 <select name="sort_by" class="form-control">
                     <option value="">Trier par</option>
-                    <option value="dateDebut" {% if app.request.query.get('sort_by') == 'dateDebut' %}selected{% endif %}>Date de début</option>
-                    <option value="nbrPlaces" {% if app.request.query.get('sort_by') == 'nbrPlaces' %}selected{% endif %}>Nombre de places</option>
+                    <option value="datedebut" {% if app.request.query.get('sort_by') == 'datedebut' %}selected{% endif %}>Date de début</option>
+                    <option value="nbrplaces" {% if app.request.query.get('sort_by') == 'nbrplaces' %}selected{% endif %}>Nombre de places</option>
                 </select>
             </div>
             <div class="col-md-4">
@@ -73,6 +80,13 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="service-item">
                         <div class="main-content">
+                            <!-- Affichage de l'image -->
+                            {% if formation.imageName %}
+                                <img src="{{ vich_uploader_asset(formation, 'imageFile') }}" alt="{{ formation.titre }}">
+                            {% else %}
+                                <img src="{{ asset('images/default-image.jpg') }}" alt="Image par défaut">
+                            {% endif %}
+
                             <h4 class="text-primary">{{ formation.titre }}</h4>
                             <p>{{ formation.description|slice(0, 80) ~ '...' }}</p> 
                             <div class="main-button">
@@ -87,5 +101,4 @@
         </div>
     </div>
 </div>
-
 {% endblock %}

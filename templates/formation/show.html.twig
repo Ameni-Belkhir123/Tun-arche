@@ -238,7 +238,8 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        messageDiv.innerHTML = `<div class='alert alert-success'>${data.message}</div>`;
+                        messageDiv.innerHTML = `<div class='alert alert-success'>${data.message}</div>`
+                        ;
 
                         if (commentsSection) {
                             let newComment = document.createElement('div');
