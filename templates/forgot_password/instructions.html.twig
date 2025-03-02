@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Reset Password Instructions | Dashboardkit Dashboard Template</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,minimal-ui">
+    <link rel="icon" href="{{ asset('back1/temp/dashboardkit.io/assets/images/favicon.svg') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ asset('back1/temp/dashboardkit.io/assets/css/style.css') }}" id="main-style-link">
+    <link rel="stylesheet" href="{{ asset('back1/temp/dashboardkit.io/assets/css/style-preset.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  </head>
+  <body>
+    <div class="auth-main v2">
+      <div class="bg-overlay bg-dark"></div>
+      <div class="auth-wrapper">
+        <div class="auth-sidecontent">
+          <div class="text-start px-3 px-md-5 pb-3 pb-md-5">
+            <img src="{{ asset('back1/temp/dashboardkit.io/assets/images/logo-white.svg') }}" alt="" class="img-fluid">
+            <h1 class="text-white my-4">Check Your Email</h1>
+            <h4 class="text-white font-weight-normal">A verification code has been sent to your email. Enter the code below to reset your password.</h4>
+          </div>
+        </div>
+        <div class="auth-form">
+          <div class="card mb-0">
+            <div class="card-body">
+              <div class="auth-content">
+                {% for flash in app.flashes('error') %}
+                  <div class="alert alert-danger">{{ flash }}</div>
+                {% endfor %}
+                {% for flash in app.flashes('success') %}
+                  <div class="alert alert-success">{{ flash }}</div>
+                {% endfor %}
+                <form action="{{ path('verify_forgot_code') }}" method="POST">
+                  <div class="form-group">
+                    <label for="verification_code">Enter Verification Code</label>
+                    <input type="text" name="verification_code" id="verification_code" class="form-control" placeholder="6-character code" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-block mb-4">Verify Code</button>
+                </form>
+                <div class="text-center">
+                  <a href="{{ path('resend_forgot_code') }}" class="btn btn-link">Resend Code</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

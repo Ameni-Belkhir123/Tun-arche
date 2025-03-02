@@ -1,0 +1,95 @@
+<h4 class="mb-3 f-w-400">Register</h4>
+
+
+{{ form_start(form) }}
+
+<div class="input-group mb-3">
+	<span class="input-group-text">
+		<i data-feather="user"></i>
+	</span>
+	{{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Name'}}) }}
+          {{ form_errors(form.name) }} 
+</div>
+
+<div class="input-group mb-3">
+	<span class="input-group-text">
+		<i data-feather="user"></i>
+	</span>
+	{{ form_widget(form.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Last Name'}}) }}
+	  {{ form_errors(form.lastName) }} 
+</div>
+
+<div class="input-group mb-3">
+	<span class="input-group-text">
+		<i data-feather="mail"></i>
+	</span>
+	{{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Email address'}}) }}
+	 {{ form_errors(form.email) }}
+</div>
+
+<div class="input-group mb-4">
+	<span class="input-group-text">
+		<i data-feather="lock"></i>
+	</span>
+	{{ form_widget(form.password, {'attr': {'class': 'form-control', 'placeholder': 'Password'}}) }}
+	   {{ form_errors(form.password) }}
+</div>
+
+<div class="input-group mb-4">
+	<span class="input-group-text">
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+			<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+			<circle cx="9" cy="7" r="4"></circle>
+			<path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+			<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+		</svg>
+	</span>
+	{{ form_widget(form.role, {'attr': {'class': 'form-control', 'required': true}}) }}
+</div>
+
+<div class="mb-3 mt-2">
+	<div class="form-check text-start">
+		<input class="form-check-input" type="checkbox" id="flexCheckChecked" checked>
+		<label class="form-check-label" for="flexCheckChecked">I agree to all the Terms & Conditions</label>
+	</div>
+</div>
+
+<button class="btn btn-primary btn-block mb-4">Register</button>
+
+{{ form_end(form) }}
+
+<div class="saprator my-3 text-center">
+	<span>OR</span>
+</div>
+
+<div class="row g-2">
+	<div class="col-4">
+		<div class="d-grid">
+			<button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
+				<img src="{{ asset('back1/temp/dashboardkit.io/assets/images/authentication/google.svg') }}" alt="Google">
+				<span class="d-none d-sm-inline-block">Google</span>
+			</button>
+		</div>
+	</div>
+	<div class="col-4">
+		<div class="d-grid">
+			<button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
+				<img src="{{ asset('back1/temp/dashboardkit.io/assets/images/authentication/twitter.svg') }}" alt="Twitter">
+				<span class="d-none d-sm-inline-block">Twitter</span>
+			</button>
+		</div>
+	</div>
+	<div class="col-4">
+		<div class="d-grid">
+			<button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
+				<img src="{{ asset('back1/temp/dashboardkit.io/assets/images/authentication/facebook.svg') }}" alt="Facebook">
+				<span class="d-none d-sm-inline-block">Facebook</span>
+			</button>
+		</div>
+	</div>
+</div>
+
+<p class="mt-4 text-center">
+	Already have an account?
+	<a href="{{ path('login') }}" class="f-w-400">Login</a>
+</p>

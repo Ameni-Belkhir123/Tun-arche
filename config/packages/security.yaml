@@ -1,0 +1,35 @@
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            lazy: true
+            provider: app_user_provider
+            custom_authenticators:
+                - App\Security\AuthAuthenticator
+            entry_point: App\Security\LoginEntryPoint
+            user_checker: App\Security\UserChecker
+            logout:
+                path: /logout
+                target: /login
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+
+    access_control:
+        - { path: ^/verify/email, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/, roles: ROLE_ADMIN }
+        - { path: ^/home2, roles: [ROLE_USER, ROLE_ARTIST] }

@@ -1,0 +1,10 @@
+{% extends 'back/base.html.twig' %}
+{% block body %}
+<br> <br>
+<!DOCTYPE html>
+<title>Edit User</title>
+
+    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_user_index') }}">back to list</a>
+{% endblock %}

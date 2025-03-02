@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Registration Instructions | Dashboardkit Dashboard Template</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Dashboardkit is trending dashboard template made using Bootstrap 5 design framework.">
+    <meta name="keywords" content="Dashboard, Admin, Template">
+    <meta name="author" content="Codedthemes">
+    <link rel="icon" href="{{ asset('back1/temp/dashboardkit.io/assets/images/favicon.svg') }}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('back1/temp/dashboardkit.io/assets/fonts/phosphor/duotone/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('back1/temp/dashboardkit.io/assets/fonts/tabler-icons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('back1/temp/dashboardkit.io/assets/fonts/feather.css') }}">
+    <link rel="stylesheet" href="{{ asset('back1/temp/dashboardkit.io/assets/fonts/fontawesome.css') }}">
+    <link rel="stylesheet" href="{{ asset('back1/temp/dashboardkit.io/assets/fonts/material.css') }}">
+    <link rel="stylesheet" href="{{ asset('back1/temp/dashboardkit.io/assets/css/style.css') }}" id="main-style-link">
+    <link rel="stylesheet" href="{{ asset('back1/temp/dashboardkit.io/assets/css/style-preset.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  </head>
+  <body data-pc-preset="preset-1" data-pc-sidebar-theme="dark" data-pc-header-theme="light" data-pc-sidebar-caption="true" data-pc-direction="ltr" data-pc-theme="light">
+    <div class="loader-bg">
+      <div class="pc-loader">
+        <div class="loader-fill"></div>
+      </div>
+    </div>
+    <div class="auth-main v2">
+      <div class="bg-overlay bg-dark"></div>
+      <div class="auth-wrapper">
+        <div class="auth-sidecontent">
+          <div class="text-start px-3 px-md-5 pb-3 pb-md-5">
+            <img src="{{ asset('back1/temp/dashboardkit.io/assets/images/logo-white.svg') }}" alt="" class="img-fluid">
+            <h1 class="text-white my-4">Welcome!</h1>
+            <h4 class="text-white font-weight-normal">Please verify your email to activate your account.</h4>
+          </div>
+        </div>
+        <div class="auth-form">
+          <div class="card mb-0">
+            <div class="card-body">
+              <div class="auth-content">
+                <img src="{{ asset('back1/temp/dashboardkit.io/assets/images/logo-dark.svg') }}" alt="" class="img-fluid mb-4 d-block d-xl-none d-lg-none">
+                <h4 class="mb-3 f-w-400">Verify Your Account</h4>
+                {% for flash in app.flashes('error') %}
+                  <div class="alert alert-danger">{{ flash }}</div>
+                {% endfor %}
+                {% for flash in app.flashes('success') %}
+                  <div class="alert alert-success">{{ flash }}</div>
+                {% endfor %}
+                <form action="{{ path('verify_code') }}" method="POST" id="verification-form">
+                  <div class="form-group">
+                    <label for="verification_code">Enter Verification Code</label>
+                    <input type="text" name="verification_code" id="verification_code" class="form-control" placeholder="6-character code" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-block mb-4">Verify</button>
+                </form>
+                <div class="text-center">
+                  <a href="{{ path('resend_code') }}" class="btn btn-link">Resend Code</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="{{ asset('back1/temp/dashboardkit.io/assets/js/plugins/popper.min.js') }}"></script>
+    <script src="{{ asset('back1/temp/dashboardkit.io/assets/js/plugins/simplebar.min.js') }}"></script>
+    <script src="{{ asset('back1/temp/dashboardkit.io/assets/js/plugins/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('back1/temp/dashboardkit.io/assets/js/plugins/i18next.min.js') }}"></script>
+    <script src="{{ asset('back1/temp/dashboardkit.io/assets/js/plugins/i18nextHttpBackend.min.js') }}"></script>
+    <script src="{{ asset('back1/temp/dashboardkit.io/assets/js/fonts/custom-font.js') }}"></script>
+    <script src="{{ asset('back1/temp/dashboardkit.io/assets/js/pcoded.js') }}"></script>
+    <script src="{{ asset('back1/temp/dashboardkit.io/assets/js/theme.js') }}"></script>
+    <script src="{{ asset('back1/temp/dashboardkit.io/assets/js/multi-lang.js') }}"></script>
+    <script src="{{ asset('back1/temp/dashboardkit.io/assets/js/plugins/feather.min.js') }}"></script>
+  </body>
+</html>
