@@ -3,6 +3,14 @@ services:
         arguments:
             $recaptchaSecret: '%env(string:RECAPTCHA_PRIVATE_KEY)%'
 
+    Knp\Snappy\Pdf: '@knp_snappy.pdf'
+
+    # Define the knp_snappy.pdf service using the Windows short path (no spaces)
+    knp_snappy.pdf:
+        class: Knp\Snappy\Pdf
+        arguments:
+            - 'C:\PROGRA~1\wkhtmltopdf\bin\wkhtmltopdf.exe'
+
     _defaults:
         autowire: true
         autoconfigure: true

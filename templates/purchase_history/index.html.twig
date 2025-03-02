@@ -1,0 +1,40 @@
+{% extends 'front1/base.html.twig' %}
+
+{% block content %}
+    <div class="container my-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>My Purchase History</h2>
+            <a href="{{ path('purchase_history_pdf') }}" class="btn btn-outline-primary" style="border-radius: 25px;">
+                Extract as PDF
+            </a>
+        </div>
+        {% if tickets is not empty %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>Ticket Number</th>
+                        <th>Date of Emission</th>
+                        <th>Payment Mode</th>
+                        <th>Ticket Type</th>
+                        <th>Event</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for ticket in tickets %}
+                        <tr>
+                            <td>{{ ticket.numero }}</td>
+                            <td>{{ ticket.dateEmission ? ticket.dateEmission|date('Y-m-d') : '' }}</td>
+                            <td>{{ ticket.modePaiement }}</td>
+                            <td>{{ ticket.type }}</td>
+                            <td>{{ ticket.event ? ticket.event.nameEvent : 'N/A' }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>You haven't purchased any tickets yet.</p>
+        {% endif %}
+    </div>
+{% endblock %}

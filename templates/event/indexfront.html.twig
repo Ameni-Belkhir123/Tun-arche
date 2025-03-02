@@ -1,49 +1,48 @@
 {% extends 'front1/base.html.twig' %}
-{% block body %}
 
-<link rel="stylesheet" href="{{asset('front1/stylee.css')}}">
-<body>
- {% for event in events %}
-<div class="event-container">
-    <div class="event-image">
-        <div class="date-box">
-            <span class="day">{{ event.price }} $</span>  
-           
+{% block content %}
+    <link rel="stylesheet" href="{{ asset('front1/stylee.css') }}">
+    <div class="container my-5">
+        <div class="d-flex justify-content-end mb-4">
+            <a href="{{ path('purchase_history_index') }}" class="btn btn-outline-primary" style="border-radius: 25px;">
+                My Purchase History
+            </a>
         </div>
-        <img src="{{asset('/front1/images/demo/p1.jpg')}}" alt="Event">
-    </div>
-    <div class="event-details">
-        <h2>{{ event.nameEvent }}</h2>
-        <p class="location">{{ event.placeEvent }}</p>
-        <p class="description">
-      {{ event.discription }}
-        </p>
-
-        <div class="speakers">
-            <div class="speaker">
-          
-                <div>
-                    <p class="name">dateStart
-                            </p>
-                    <p class="role">{{ event.dateStart ? event.dateStart|date('Y-m-d') : '' }}</p>
+        <div class="row">
+            {% for event in events %}
+                {% set ticketsLeft = event.totalTickets - event.soldTickets %}
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0" style="border-radius: 15px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
+                        <div class="card-body p-4" style="background: linear-gradient(135deg, #f8f9fa, #e9ecef);">
+                            <h5 class="card-title mb-3" style="font-weight: 600; font-size: 1.5rem;">{{ event.nameEvent }}</h5>
+                            <p class="card-text" style="font-size: 0.95rem;">{{ event.discription }}</p>
+                            <ul class="list-unstyled" style="font-size: 0.9rem;">
+                                <li><strong>Location:</strong> {{ event.placeEvent }}</li>
+                                <li><strong>Start Date:</strong> {{ event.dateStart ? event.dateStart|date('Y-m-d') : '' }}</li>
+                                <li><strong>End Date:</strong> {{ event.dateEnd ? event.dateEnd|date('Y-m-d') : '' }}</li>
+                                <li><strong>Price:</strong> {{ event.price }} $</li>
+                                <li><strong>Tickets Left:</strong> {{ ticketsLeft }}</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer text-center p-3" style="background: transparent;">
+                            {% if ticketsLeft <= 0 %}
+                                <button class="btn btn-outline-secondary w-100" disabled style="border-radius: 25px;">
+                                    Sold Out
+                                </button>
+                            {% else %}
+                                <a href="{{ path('app_billet_new2', { 'eventId': event.id }) }}" class="btn btn-primary w-100"
+                                   style="border-radius: 25px; background-color: #0071e3; border: none;">
+                                    Buy Tickets Now!
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="speaker">
-           
-                <div>
-                    <p class="name">dateEnd</p>
-                    <p class="role">{{ event.dateEnd ? event.dateEnd|date('Y-m-d') : '' }} </p>
+            {% else %}
+                <div class="col-12">
+                    <p class="text-center">No events available at the moment.</p>
                 </div>
-            </div>
-        </div>
-
-        <div class="buttons">
-       <a href="{{ path('app_billet_new2', { 'eventId': event.id }) }}" class="buy-btn">Buy Tickets Now!</a>
-
+            {% endfor %}
         </div>
     </div>
-</div>
-{% endfor %}
-
-</body>
 {% endblock %}

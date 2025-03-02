@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Purchase History</title>
+    <style>
+        body { font-family: sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+<h2>My Purchase History</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Ticket Number</th>
+        <th>Date of Emission</th>
+        <th>Payment Mode</th>
+        <th>Ticket Type</th>
+        <th>Event</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for ticket in tickets %}
+        <tr>
+            <td>{{ ticket.numero }}</td>
+            <td>{{ ticket.dateEmission ? ticket.dateEmission|date('Y-m-d') : '' }}</td>
+            <td>{{ ticket.modePaiement }}</td>
+            <td>{{ ticket.type }}</td>
+            <td>{{ ticket.event ? ticket.event.nameEvent : 'N/A' }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

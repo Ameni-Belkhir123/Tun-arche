@@ -21,7 +21,7 @@ final class EventController extends AbstractController
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $event->setAvailableTickets($event->getTotalTickets());
+            $event->setTotalTickets($event->getTotalTickets());
             $entityManager->persist($event);
             $entityManager->flush();
             return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
