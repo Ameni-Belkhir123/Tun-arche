@@ -1,0 +1,116 @@
+{% extends 'back/base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-8">
+        <h1 class="mb-4">Statistics</h1>
+        <div class="row mb-4">
+            <div class="col-6">
+                <div class="card text-white bg-primary">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Events</h5>
+                        <p class="card-text" style="font-size: 2rem;">{{ totalEvents }}</p>
+                        <p class="card-text">Total number of events held.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Events per Month</h5>
+                        <p class="mb-0">Number of events held each month.</p>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="eventsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Payment Methods Distribution</h5>
+                        <p class="mb-0">Distribution of payment methods used for ticket sales.</p>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="paymentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row mb-4">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Tickets Sold per Day</h5>
+                        <p class="mb-0">Number of tickets sold on each day of the week.</p>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="ticketsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx1 = document.getElementById('eventsChart').getContext('2d');
+        var eventsChart = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: {{ months|raw }},
+                datasets: [{
+                    label: 'Events per Month',
+                    data: {{ eventsCounts|raw }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: { scales: { y: { beginAtZero: true } } }
+        });
+
+        var ctx2 = document.getElementById('paymentChart').getContext('2d');
+        var paymentChart = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: {{ paymentLabels|raw }},
+                datasets: [{
+                    label: 'Payment Methods',
+                    data: {{ paymentData|raw }},
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)'
+                    ]
+                }]
+            }
+        });
+
+        var ctx3 = document.getElementById('ticketsChart').getContext('2d');
+        var ticketsChart = new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels: {{ dayLabels|raw }},
+                datasets: [{
+                    label: 'Tickets Sold per Day',
+                    data: {{ dayData|raw }},
+                    fill: false,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    tension: 0.1
+                }]
+            },
+            options: { scales: { y: { beginAtZero: true } } }
+        });
+    </script>
+{% endblock %}

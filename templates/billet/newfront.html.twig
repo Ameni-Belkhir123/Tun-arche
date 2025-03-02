@@ -1,0 +1,11 @@
+{% extends 'front1/base.html.twig' %}
+
+{% block body %}
+  
+<h2>Buy a Ticket for {{ event.nameEvent }}</h2>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="buy-btn">Confirm Purchase</button>
+    {{ form_end(form) }}
+
+{% endblock %}

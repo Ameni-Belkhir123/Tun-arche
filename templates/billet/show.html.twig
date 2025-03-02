@@ -1,0 +1,52 @@
+{% extends 'back/base.html.twig' %}
+
+{% block body %}
+	<br>
+	<br>
+	<div class="container mt-4">
+		<h1 class="mb-4">Billet Details</h1>
+		<div class="card">
+			<div class="card-body">
+				<table class="table table-bordered table-striped">
+					<tbody>
+					<tr>
+						<th>Id</th>
+						<td>{{ billet.id }}</td>
+					</tr>
+					<tr>
+						<th>Numero</th>
+						<td>{{ billet.numero }}</td>
+					</tr>
+					<tr>
+						<th>Date Emission</th>
+						<td>{{ billet.dateEmission ? billet.dateEmission|date('Y-m-d H:i') : '' }}</td>
+					</tr>
+					<tr>
+						<th>Mode de Paiement</th>
+						<td>{{ billet.modePaiement }}</td>
+					</tr>
+					<tr>
+						<th>Type</th>
+						<td>{{ billet.type }}</td>
+					</tr>
+					<tr>
+						<th>Buyer</th>
+						<td>{{ billet.buyer ? billet.buyer.fullName : 'N/A' }}</td>
+					</tr>
+					<tr>
+						<th>Event</th>
+						<td>{{ billet.event ? billet.event.nameEvent : 'N/A' }}</td>
+					</tr>
+					</tbody>
+				</table>
+				<div class="d-flex justify-content-between">
+					<a href="{{ path('app_billet_index') }}" class="btn btn-primary">
+						<i class="fas fa-arrow-left"></i>
+						Back to List
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+{% endblock %}

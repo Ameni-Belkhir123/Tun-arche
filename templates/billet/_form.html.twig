@@ -1,0 +1,32 @@
+<div class="card">
+  <div class="card-header">
+    <h5>Billet Creation Form</h5>
+  </div>
+  <div class="card-body">
+    {{ form_start(form, { 'attr': { 'novalidate': 'novalidate' } }) }}
+
+      <div class="mb-3">
+        {{ form_label(form.mode_paiement, 'Payment Method:', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.mode_paiement, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.mode_paiement) }}
+      </div>
+
+      <div class="mb-3">
+        {{ form_label(form.type, 'Ticket Type:', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.type) }}
+      </div>
+
+      <div class="mb-3">
+        {{ form_label(form.event, 'Event:', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.event, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.event) }}
+      </div>
+
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary">{{ button_label|default('Create Ticket') }}</button>
+      </div>
+
+    {{ form_end(form) }}
+  </div>
+</div>

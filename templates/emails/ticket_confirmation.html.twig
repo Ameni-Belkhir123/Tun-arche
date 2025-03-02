@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket Purchase Confirmation</title>
+</head>
+<body>
+<h1>Ticket Purchase Confirmation</h1>
+<p>Dear {{ user.fullName }},</p>
+<p>You have successfully purchased a ticket for the event <strong>{{ event.nameEvent }}</strong>.</p>
+<p><strong>Ticket Details:</strong></p>
+<ul>
+    <li>Ticket Number: {{ billet.numero }}</li>
+    <li>Date of Purchase: {{ billet.dateEmission|date('Y-m-d H:i') }}</li>
+    <li>Event Date: From {{ event.dateStart|date('Y-m-d') }} to {{ event.dateEnd|date('Y-m-d') }}</li>
+    <li>Location: {{ event.placeEvent }}</li>
+    <li>Price: ${{ event.price }}</li>
+</ul>
+<p>Thank you for your purchase!</p>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<div class="card">
+    <div class="card-header">
+        <h5>Event Creation Form</h5>
+    </div>
+    <div class="card-body">
+        {{ form_start(form, { 'attr': { 'novalidate': 'novalidate' } }) }}
+        <div class="mb-3">
+            {{ form_label(form.name_event, 'Event Name:', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.name_event, {'attr': {'class': 'form-control', 'placeholder': 'Enter Event Name'}}) }}
+            {{ form_errors(form.name_event) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.date_start, 'Start Date:', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.date_start, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.date_start) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.date_end, 'End Date:', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.date_end, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.date_end) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.place_event, 'Location:', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.place_event, {'attr': {'class': 'form-control', 'placeholder': 'Enter Event Location'}}) }}
+            {{ form_errors(form.place_event) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.discription, 'Description:', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.discription, {'attr': {'class': 'form-control', 'placeholder': 'Enter Description', 'rows': '5'}}) }}
+            {{ form_errors(form.discription) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.price, 'Price:', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.price, {'attr': {'class': 'form-control', 'placeholder': 'Enter Price'}}) }}
+            {{ form_errors(form.price) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.totalTickets, 'Total Tickets:', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.totalTickets, {'attr': {'class': 'form-control', 'placeholder': 'Enter Total Tickets'}}) }}
+            {{ form_errors(form.totalTickets) }}
+        </div>
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">{{ button_label|default('Create Event') }}</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>

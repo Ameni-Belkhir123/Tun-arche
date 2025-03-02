@@ -163,4 +163,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->codeSentAt = $codeSentAt;
         return $this;
     }
+
+    public function getFullName(): string
+    {
+        return $this->name . ' ' . $this->last_name;
+    }
 }

@@ -1,0 +1,36 @@
+{% extends "front1/base.html.twig" %}
+{% block body %}
+
+    <h1>Event index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Nbr_participant</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+            <tr>
+                <td>{{ event.id }}</td>
+                <td>{{ event.name }}</td>
+                <td>{{ event.date ? event.date|date('Y-m-d') : '' }}</td>
+                <td>{{ event.nbrParticipant }}</td>
+                <td>
+                  
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+  
+{% endblock %}

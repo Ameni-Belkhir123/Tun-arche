@@ -1,0 +1,49 @@
+{% extends 'front1/base.html.twig' %}
+{% block body %}
+
+<link rel="stylesheet" href="{{asset('front1/stylee.css')}}">
+<body>
+ {% for event in events %}
+<div class="event-container">
+    <div class="event-image">
+        <div class="date-box">
+            <span class="day">{{ event.price }} $</span>  
+           
+        </div>
+        <img src="{{asset('/front1/images/demo/p1.jpg')}}" alt="Event">
+    </div>
+    <div class="event-details">
+        <h2>{{ event.nameEvent }}</h2>
+        <p class="location">{{ event.placeEvent }}</p>
+        <p class="description">
+      {{ event.discription }}
+        </p>
+
+        <div class="speakers">
+            <div class="speaker">
+          
+                <div>
+                    <p class="name">dateStart
+                            </p>
+                    <p class="role">{{ event.dateStart ? event.dateStart|date('Y-m-d') : '' }}</p>
+                </div>
+            </div>
+            <div class="speaker">
+           
+                <div>
+                    <p class="name">dateEnd</p>
+                    <p class="role">{{ event.dateEnd ? event.dateEnd|date('Y-m-d') : '' }} </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons">
+       <a href="{{ path('app_billet_new2', { 'eventId': event.id }) }}" class="buy-btn">Buy Tickets Now!</a>
+
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+</body>
+{% endblock %}

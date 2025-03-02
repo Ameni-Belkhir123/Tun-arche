@@ -1,0 +1,32 @@
+{% extends "front1/base.html.twig" %}
+
+{% block body %}
+    <h1>Billet index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+              
+                <th>Num_chaise</th>
+                <th>Date</th>
+                <th>Nom_event</th>
+         
+            </tr>
+        </thead>
+        <tbody>
+        {% for billet in billets %}
+            <tr>
+               
+                <td>{{ billet.numChaise }}</td>
+                <td>{{ billet.date ? billet.date|date('Y-m-d') : '' }}</td>
+                <td>{{ billet.nomEvent }}</td>
+                
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
