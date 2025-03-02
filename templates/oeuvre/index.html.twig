@@ -1,0 +1,41 @@
+{% extends "back/base.html.twig" %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Oeuvre Index</h1>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered text-center">
+                <thead class="table-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>Titre</th>
+                    <th>Galerie</th>
+                    <th>Artist</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for oeuvre in oeuvres %}
+                    <tr>
+                        <td>{{ oeuvre.id }}</td>
+                        <td>{{ oeuvre.titre }}</td>
+                        <td>{{ oeuvre.galerie ? oeuvre.galerie.nom : 'No Galerie' }}</td>
+                        <td>{{ oeuvre.artist ? oeuvre.artist.getFullName() : 'No Artist' }}</td>
+                        <td>
+                            <a href="{{ path('app_oeuvre_show', {'id': oeuvre.id}) }}" class="btn btn-primary mx-1">Show</a>
+                            <a href="{{ path('app_oeuvre_edit', {'id': oeuvre.id}) }}" class="btn btn-warning mx-1">Edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">No records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <a href="{{ path('app_oeuvre_new') }}" class="btn btn-success px-4">Create New</a>
+        </div>
+    </div>
+{% endblock %}

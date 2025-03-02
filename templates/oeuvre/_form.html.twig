@@ -1,0 +1,23 @@
+{{ form_start(form, {'attr': {'class': 'form', 'enctype': 'multipart/form-data'}}) }}
+<div class="mb-3">
+    {{ form_label(form.titre) }}
+    {{ form_widget(form.titre, {'attr': {'class': 'form-control', 'placeholder': 'Enter titre'}}) }}
+</div>
+<div class="mb-3">
+    {{ form_label(form.galerie) }}
+    {{ form_widget(form.galerie, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="mb-3">
+    {{ form_label(form.artist) }}
+    {{ form_widget(form.artist, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="mb-3">
+    {{ form_label(form.description) }}
+    {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Enter description'}}) }}
+</div>
+<div class="mb-3">
+    {{ form_label(form.image) }}
+    {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+</div>
+<button class="btn btn-success">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

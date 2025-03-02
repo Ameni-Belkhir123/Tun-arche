@@ -1,3 +1,7 @@
+parameters:
+    galerie_images_directory: '%kernel.project_dir%/public/uploads/galerie'
+    oeuvre_images_directory: '%kernel.project_dir%/public/uploads/oeuvre'
+
 services:
     App\Security\AuthAuthenticator:
         arguments:

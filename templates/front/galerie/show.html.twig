@@ -1,0 +1,44 @@
+{% extends 'front1/base.html.twig' %}
+
+{% block title %}{{ galerie.nom }} - Gallery Details{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">{{ galerie.nom }}</h1>
+        <div class="text-center mb-3">
+            {% if galerie.image %}
+                <img src="{{ galerie.image }}" alt="{{ galerie.nom }}" class="img-fluid" style="max-height:300px;">
+            {% endif %}
+        </div>
+        <p class="text-center" style="white-space: pre-wrap;">
+            <strong>Total Views:</strong> {{ galerie.getTotalViews() }}
+            <strong>Artworks:</strong> {{ galerie.getOeuvres()|length }}
+        </p>
+        <div class="row">
+            {% for oeuvre in galerie.getOeuvres() %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100" style="box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        {% if oeuvre.image %}
+                            <img src="{{ oeuvre.image }}" class="card-img-top" alt="{{ oeuvre.titre }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ oeuvre.titre }}</h5>
+                            <p class="card-text" style="white-space: pre-wrap;">
+                                {{ oeuvre.description|striptags|length > 100 ? oeuvre.description|striptags|slice(0, 100) ~ '...' : oeuvre.description|striptags }}
+                            </p>
+                            <p class="card-text">
+                                <small class="text-muted">Views: {{ oeuvre.views }}</small>
+                            </p>
+                            <a href="{{ path('front_oeuvre_show', {'id': oeuvre.id}) }}" class="btn btn-primary">Inspect Artwork</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-center">No artworks in this gallery.</p>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ path('front_galerie_index') }}" class="btn btn-secondary">Back to Galeries</a>
+        </div>
+    </div>
+{% endblock %}

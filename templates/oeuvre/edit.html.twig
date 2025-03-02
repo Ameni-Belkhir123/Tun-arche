@@ -1,0 +1,20 @@
+{% extends "back/base.html.twig" %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h2>Edit Oeuvre</h2>
+                    </div>
+                    <div class="card-body">
+                        {{ include('oeuvre/_form.html.twig', {'button_label': 'Update'}) }}
+                        <a href="{{ path('app_oeuvre_index') }}" class="btn btn-secondary mt-3">Back to list</a>
+                        {{ include('oeuvre/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

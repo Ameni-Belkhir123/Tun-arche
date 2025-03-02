@@ -1,0 +1,49 @@
+{% extends 'front1/base.html.twig' %}
+
+{% block title %}Explore Galeries{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">Explore Galeries</h1>
+
+        <!-- Search and Sort Form -->
+        <div class="row mb-4">
+            <div class="col-md-6 mx-auto">
+                <form method="get" action="{{ path('front_galerie_index') }}">
+                    <div class="input-group">
+                        <input type="text" name="search" value="{{ search }}" class="form-control" placeholder="Search galleries...">
+                        <select class="form-select" name="sort">
+                            <option value="views" {% if sort == 'views' %}selected{% endif %}>Sort by Views</option>
+                            <option value="time" {% if sort == 'time' %}selected{% endif %}>Sort by Time</option>
+                            <option value="artworks" {% if sort == 'artworks' %}selected{% endif %}>Sort by Artworks Count</option>
+                        </select>
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <p class="text-center">Number of galleries: {{ galeries|length }}</p>
+        <div class="row">
+            {% for galerie in galeries %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100" style="box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        {% if galerie.image %}
+                            <img src="{{ galerie.image }}" class="card-img-top" alt="{{ galerie.nom }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ galerie.nom }}</h5>
+                            <p class="card-text" style="white-space: pre-wrap;">
+                                <strong>Total Views:</strong> {{ galerie.getTotalViews() }}<br>
+                                <strong>Artworks:</strong> {{ galerie.getOeuvres()|length }}
+                            </p>
+                            <a href="{{ path('front_galerie_show', {'id': galerie.id}) }}" class="btn btn-primary">Explore Galerie</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-center">No galleries found.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'front1/base.html.twig' %}
+
+{% block title %}{{ oeuvre.titre }} - Artwork Details{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">{{ oeuvre.titre }}</h1>
+        <div class="text-center mb-3">
+            {% if oeuvre.image %}
+                <img src="{{ oeuvre.image }}" alt="{{ oeuvre.titre }}" class="img-fluid" style="max-height:300px;">
+            {% endif %}
+        </div>
+        <p class="text-center" style="white-space: pre-wrap;">
+            <strong>Artist:</strong> {{ oeuvre.artist ? oeuvre.artist.getFullName() : 'Unknown' }}<br>
+            <strong>Views:</strong> {{ oeuvre.views }}
+        </p>
+        <div class="card" style="box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <div class="card-body" style="white-space: pre-wrap;">
+                {{ oeuvre.description }}
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ path('front_galerie_show', {'id': oeuvre.galerie.id}) }}" class="btn btn-secondary">Back to Galerie</a>
+        </div>
+    </div>
+{% endblock %}
