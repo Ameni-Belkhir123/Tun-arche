@@ -1,0 +1,10 @@
+{% extends 'front1/base.html.twig' %}
+
+{% block content %}
+    <div class="container my-5 text-center">
+        <h2>QR Code for Ticket {{ ticket.numero }}</h2>
+        <img src="data:image/png;base64,{{ qrImageData }}" alt="QR Code" class="img-fluid" style="max-width: 300px;">
+        <br><br>
+        <a href="{{ path('purchase_history_index') }}" class="btn btn-secondary" style="border-radius: 25px;">Back to Purchase History</a>
+    </div>
+{% endblock %}

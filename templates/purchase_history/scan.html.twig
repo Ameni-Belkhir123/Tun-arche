@@ -1,0 +1,27 @@
+{% extends 'front1/base.html.twig' %}
+
+{% block content %}
+    <div class="container my-5">
+        <h2>Scan QR Code</h2>
+        <p>Use your device camera to scan your ticket's QR code.</p>
+        <div id="qr-reader" style="width:500px; margin: auto;"></div>
+        <div id="qr-reader-results" class="text-center mt-3" style="font-size:1.2rem; font-weight: bold;"></div>
+    </div>
+
+    <!-- Include html5-qrcode from CDN -->
+    <script src="https://unpkg.com/html5-qrcode@2.2.1/minified/html5-qrcode.min.js"></script>
+    <script>
+        function onScanSuccess(decodedText, decodedResult) {
+            // Handle successful scan.
+            console.log(`Code matched = ${decodedText}`, decodedResult);
+            document.getElementById('qr-reader-results').innerText = `Scanned Ticket: ${decodedText}`;
+            // Stop scanning once a code is found.
+            html5QrcodeScanner.clear();
+        }
+
+        let html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-reader", { fps: 10, qrbox: 250 }
+        );
+        html5QrcodeScanner.render(onScanSuccess);
+    </script>
+{% endblock %}

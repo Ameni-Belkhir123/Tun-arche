@@ -4,9 +4,11 @@
     <div class="container my-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>My Purchase History</h2>
-            <a href="{{ path('purchase_history_pdf') }}" class="btn btn-outline-primary" style="border-radius: 25px;">
-                Extract as PDF
-            </a>
+            <div>
+                <a href="{{ path('purchase_history_pdf') }}" class="btn btn-outline-primary" style="border-radius: 25px; margin-right: 10px;">
+                    Extract as PDF
+                </a>
+            </div>
         </div>
         {% if tickets is not empty %}
             <div class="table-responsive">
@@ -18,6 +20,8 @@
                         <th>Payment Mode</th>
                         <th>Ticket Type</th>
                         <th>Event</th>
+                        <th>Refund</th>
+                        <th>QR Code</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -28,6 +32,21 @@
                             <td>{{ ticket.modePaiement }}</td>
                             <td>{{ ticket.type }}</td>
                             <td>{{ ticket.event ? ticket.event.nameEvent : 'N/A' }}</td>
+                            <td>
+                                {% if ticket.event and ticket.event.dateStart|date('U') > "now"|date('U') %}
+                                    <form action="{{ path('purchase_history_refund', {'id': ticket.id}) }}" method="post" onsubmit="return confirm('Are you sure you want to refund this ticket?');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('refund' ~ ticket.id) }}">
+                                        <button type="submit" class="btn btn-danger btn-sm" style="border-radius: 25px;">Refund</button>
+                                    </form>
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('purchase_history_qr', {'id': ticket.id}) }}" class="btn btn-info btn-sm" style="border-radius: 25px;">
+                                    View QR Code
+                                </a>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
