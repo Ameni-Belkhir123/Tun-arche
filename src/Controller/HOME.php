@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class HOME extends AbstractController
 {
-    #[Route('/home01', name: 'home01')]
+    #[Route('/register', name: 'register')]
     public function register(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, UserPasswordHasherInterface $passwordHasher, UrlGeneratorInterface $urlGenerator): Response
     {
         $user = new User();
@@ -43,7 +43,7 @@ class HOME extends AbstractController
             $mailer->send($emailMessage);
             return $this->redirectToRoute('registration_instructions');
         }
-        return $this->render('user/register.html.twig', [
+        return $this->render('/registration/register.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);
