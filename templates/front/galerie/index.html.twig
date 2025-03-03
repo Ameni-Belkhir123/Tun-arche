@@ -6,12 +6,18 @@
     <div class="container mt-5">
         <h1 class="mb-4 text-center">Explore Galeries</h1>
 
-        <!-- Search and Sort Form -->
+        <!-- Search, Sort, and Add Artwork Row -->
         <div class="row mb-4">
-            <div class="col-md-6 mx-auto">
+            <div class="col-md-4">
                 <form method="get" action="{{ path('front_galerie_index') }}">
                     <div class="input-group">
-                        <input type="text" name="search" value="{{ search }}" class="form-control" placeholder="Search galleries...">
+                        <input type="text" name="search" value="{{ search|default('') }}" class="form-control" placeholder="Search galleries...">
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <form method="get" action="{{ path('front_galerie_index') }}">
+                    <div class="input-group">
                         <select class="form-select" name="sort">
                             <option value="views" {% if sort == 'views' %}selected{% endif %}>Sort by Views</option>
                             <option value="time" {% if sort == 'time' %}selected{% endif %}>Sort by Time</option>
@@ -20,6 +26,11 @@
                         <button class="btn btn-primary" type="submit">Search</button>
                     </div>
                 </form>
+            </div>
+            <div class="col-md-4">
+                {% if is_granted('ROLE_ARTIST') %}
+                    <a href="{{ path('artist_oeuvre_new') }}" class="btn btn-success w-100">Ajouter une œuvre</a>
+                {% endif %}
             </div>
         </div>
 
@@ -42,7 +53,9 @@
                     </div>
                 </div>
             {% else %}
-                <p class="text-center">No galleries found.</p>
+                <div class="col-12">
+                    <p class="text-center">No galleries found.</p>
+                </div>
             {% endfor %}
         </div>
     </div>

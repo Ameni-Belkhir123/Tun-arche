@@ -1,0 +1,39 @@
+{% extends 'front1/base.html.twig' %}
+
+{% block title %}Mes Œuvres{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Mes Œuvres</h1>
+        <div class="row">
+            {% for oeuvre in oeuvres %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100" style="box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        {% if oeuvre.image %}
+                            <img src="{{ oeuvre.image }}" class="card-img-top" alt="{{ oeuvre.titre }}" style="height: 180px; object-fit: cover;">
+                        {% else %}
+                            <img src="{{ asset('images/default-image.jpg') }}" class="card-img-top" alt="Default Image" style="height: 180px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ oeuvre.titre }}</h5>
+                            <p class="card-text">{{ oeuvre.description|striptags|slice(0, 100) ~ '...' }}</p>
+                        </div>
+                        <div class="card-footer text-center">
+                            <form action="{{ path('artist_oeuvre_delete', {'id': oeuvre.id}) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer cette œuvre ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ oeuvre.id) }}">
+                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <p class="text-center">Vous n'avez pas encore ajouté d'œuvres.</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ path('front_galerie_index') }}" class="btn btn-secondary">Retour aux Galeries</a>
+        </div>
+    </div>
+{% endblock %}

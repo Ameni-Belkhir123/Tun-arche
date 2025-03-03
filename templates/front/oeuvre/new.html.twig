@@ -1,0 +1,28 @@
+{% extends 'front1/base.html.twig' %}
+
+{% block title %}Ajouter une œuvre{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Ajouter une œuvre</h1>
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'p-4'}}) }}
+        <div class="mb-3">
+            {{ form_row(form.titre) }}
+        </div>
+        <div class="mb-3">
+            {{ form_row(form.galerie) }}
+        </div>
+        <div class="mb-3">
+            {{ form_row(form.description) }}
+        </div>
+        <div class="mb-3">
+            {{ form_row(form.image) }}
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Ajouter l'œuvre</button>
+            <a href="{{ path('artist_oeuvre_index') }}" class="btn btn-success ms-2">Gerer mes ouvres</a>
+            <a href="{{ path('front_galerie_index') }}" class="btn btn-secondary ms-2">Retour</a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
