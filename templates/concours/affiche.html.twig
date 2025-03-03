@@ -1,0 +1,32 @@
+{% extends "front1/base.html.twig" %}
+
+{% block body %}
+
+	<div class="services section" id="services">
+		<div class="container">
+			<div class="row">
+				{% for concour in concours %}
+					<div class="col-lg-4 col-md-6">
+
+						<div class="service-item">
+							<div class="icon">
+								<img src="{{asset('assets/images/service-03.png')}}" alt="web experts">
+							</div>
+							<div class="main-content">
+								<h4>{{ concour.titre }}</h4>
+								<p>{{ concour.description|slice(0, 50) }}...</p>
+								<div class="main-button">
+
+									<a href="{{ path('app_concours_show', {'id': concour.id}) }}">Plus</a>
+
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

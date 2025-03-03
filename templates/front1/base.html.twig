@@ -57,14 +57,26 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item"><a class="nav-link" href="{{ path('app_event_indexfront') }}">Home</a></li>
-              <!-- New Explore link -->
-              <li class="nav-item"><a class="nav-link" href="{{ path('front_galerie_index') }}">Explore</a></li>
-              <li class="nav-item"><a class="nav-link" href="#">Formations</a></li>
-              <li class="nav-item"><a class="nav-link" href="#">Concours</a></li>
-              <li class="nav-item"><a class="nav-link" href="{{ path('app_event_indexfront') }}">Evenements</a></li>
-              <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_event_indexfront') }}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ path('front_galerie_index') }}">Explore</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Formations</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ path('front_concours_index') }}">Concours</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_event_indexfront') }}">Evenements</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Blog</a>
+              </li>
             </ul>
+
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 profile-menu">
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"

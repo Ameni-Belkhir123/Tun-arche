@@ -1,0 +1,39 @@
+{% extends "front1/base.html.twig" %}
+
+{% block body %}
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="card">
+					<div class="card-header">
+						<h2>Inscription au concours :
+							{{ concour.titre }}</h2>
+						<p>Du
+							{{ concour.dateDebut|date('d/m/Y') }}
+							au
+							{{ concour.dateFin|date('d/m/Y') }}</p>
+					</div>
+					<div class="card-body">
+						{{ form_start(form) }}
+						<div class="mb-3">
+							{{ form_label(form.nomArtiste, 'Nom de l\'artiste', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.nomArtiste, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre nom'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.emailArtiste, 'Adresse e-mail', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.emailArtiste, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre email'}}) }}
+                        </div>
+                        {% if form.idOeuvre is defined %}
+                            <div class="mb-3">
+                                {{ form_label(form.idOeuvre, 'ID de l\'œuvre', {'label_attr': {'class': 'form-label'}}) }}
+							{{ form_widget(form.idOeuvre, {'attr': {'class': 'form-control', 'placeholder': 'Entrez l\'ID de l\'œuvre'}}) }}
+						</div>
+					{% endif %}
+
+					{{ form_end(form) }}
+				</div>
+			</div>
+			<a href="{{ path('app_concours_show', {'id': concour.id}) }}" class="btn btn-secondary mt-3">Retour</a>
+		</div>
+	</div>
+</div>{% endblock %}

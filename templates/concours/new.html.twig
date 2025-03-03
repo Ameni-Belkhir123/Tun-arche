@@ -1,0 +1,15 @@
+{% extends "back/base.html.twig" %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="card shadow-lg p-4 rounded">
+            <div class="card-body">
+                <h1 class="text-center mb-4">Create New Concours</h1>
+                {{ include('concours/_form.html.twig') }}
+                <div class="text-center mt-3">
+                    <a href="{{ path('app_concours_index') }}" class="btn btn-secondary">Back to list</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

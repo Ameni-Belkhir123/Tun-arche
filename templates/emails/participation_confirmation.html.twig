@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Confirmation de votre inscription</title>
+</head>
+<body>
+<h1>Bonjour {{ participation.artist.fullName }},</h1>
+<p>Merci de vous être inscrit au concours "{{ participation.concours.titre }}" !</p>
+<p>Votre inscription a bien été enregistrée.</p>
+<p>Date du concours : Du {{ participation.concours.dateDebut|date('d/m/Y') }} au {{ participation.concours.dateFin|date('d/m/Y') }}</p>
+<p>Cordialement,</p>
+<p>L'équipe du concours</p>
+</body>
+</html>

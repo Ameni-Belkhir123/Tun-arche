@@ -1,0 +1,33 @@
+{% extends 'front1/base.html.twig' %}
+
+{% block title %}Concours{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Les Concours</h1>
+        <div class="row">
+            {% for concours in concours %}
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body p-3">
+                            <h5 class="card-title">{{ concours.titre }}</h5>
+                            <p class="card-text">
+                                {{ concours.description|striptags|length > 100 ? concours.description|striptags|slice(0, 100) ~ '...' : concours.description|striptags }}
+                            </p>
+                        </div>
+                        <div class="card-footer text-muted py-2">
+                            Du {{ concours.dateDebut|date('d/m/Y') }} au {{ concours.dateFin|date('d/m/Y') }}
+                        </div>
+                        <div class="card-footer text-center py-2">
+                            <a href="{{ path('front_concours_show', {'id': concours.id}) }}" class="btn btn-primary btn-sm">Voir plus</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <p class="text-center">Aucun concours trouvé.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

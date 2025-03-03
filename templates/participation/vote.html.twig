@@ -1,0 +1,42 @@
+{% extends "front1/base.html.twig" %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h1 class="mb-4">Voter pour le concours "{{ concour.titre }}"</h1>
+		<form action="{{ path('app_concours_vote', {'id': concour.id}) }}" method="GET">
+			<div class="mb-3">
+				<label for="sort_by" class="form-label">Trier par :</label>
+				<select id="sort_by" name="sort_by" class="form-select">
+					<option value="">-- Sélectionnez --</option>
+					<option value="votes_asc" {% if sortBy == 'votes_asc' %} selected {% endif %}>Votes croissants</option>
+					<option value="votes_desc" {% if sortBy == 'votes_desc' %} selected {% endif %}>Votes décroissants</option>
+				</select>
+			</div>
+			<div class="text-center">
+				<button type="submit" class="btn btn-primary">Filtrer</button>
+			</div>
+		</form>
+		<div class="row mt-4">
+			{% for participation in participations %}
+				<div class="col-md-4 mb-4">
+					<div class="card shadow-sm rounded">
+						{% if participation.imagePath %}
+							<img src="data:image/*;base64,{{ participation.imagePath }}" class="card-img-top rounded-top" alt="Participation Image">
+						{% else %}
+							<img src="{{ asset('images/default-image.jpg') }}" class="card-img-top rounded-top" alt="Default Image">
+						{% endif %}
+						<div class="card-body text-center">
+							<h5 class="card-title">{{ participation.nomArtiste }}</h5>
+							<p class="card-text">Votes: {{ participation.nbrVotes }}</p>
+							<form action="{{ path('app_vote', {'id': participation.id}) }}" method="POST" class="d-inline">
+								<button type="submit" class="btn btn-success btn-sm">Voter</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			{% else %}
+				<p class="text-center">Aucune participation disponible pour ce concours.</p>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

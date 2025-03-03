@@ -1,0 +1,38 @@
+{% extends 'front1/base.html.twig' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Inspecter l'œuvre</h1>
+        <div class="mx-auto position-relative" style="max-width: 800px; background: #fff; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+            {% if participation.imagePath %}
+                <img id="inspectImage" src="data:image/*;base64,{{ participation.imagePath }}" alt="Artwork" class="img-fluid" style="width: 100%; display: block; transition: transform 0.3s;">
+            {% else %}
+                <img id="inspectImage" src="{{ asset('images/default-image.jpg') }}" alt="Default Image" class="img-fluid" style="width: 100%; display: block; transition: transform 0.3s;">
+            {% endif %}
+            <div class="position-absolute bottom-0 start-50 translate-middle-x p-2" style="background: rgba(255,255,255,0.8); border-radius: 5px;">
+                <button id="toggleZoom" class="btn btn-secondary btn-sm">Zoom In</button>
+                <a href="{{ path('front_concours_vote', {'id': participation.concours.id}) }}" class="btn btn-info btn-sm ms-2">Retour au Vote</a>
+            </div>
+        </div>
+    </div>
+    {% block javascripts %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function(){
+                var toggleZoom = document.getElementById('toggleZoom');
+                var inspectImage = document.getElementById('inspectImage');
+                var zoomed = false;
+                toggleZoom.addEventListener('click', function() {
+                    if (!zoomed) {
+                        inspectImage.style.transform = 'scale(2)';
+                        zoomed = true;
+                        toggleZoom.textContent = 'Zoom Out';
+                    } else {
+                        inspectImage.style.transform = 'scale(1)';
+                        zoomed = false;
+                        toggleZoom.textContent = 'Zoom In';
+                    }
+                });
+            });
+        </script>
+    {% endblock %}
+{% endblock %}

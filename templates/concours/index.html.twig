@@ -1,0 +1,64 @@
+{% extends "back/base.html.twig" %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h1 class="mb-4">Concours Index</h1>
+		<table class="table table-striped table-hover shadow-sm">
+			<thead>
+			<tr>
+				<th>Id</th>
+				<th>Titre</th>
+				<th>Description</th>
+				<th>Datedebut</th>
+				<th>Datefin</th>
+				<th>Actions</th>
+			</tr>
+			</thead>
+			<tbody>
+			{% for concour in concours %}
+				<tr>
+					<td>{{ concour.id }}</td>
+					<td>{{ concour.titre }}</td>
+					<td>{{ concour.description }}</td>
+					<td>{{ concour.datedebut ? concour.datedebut|date('Y-m-d H:i:s') : '' }}</td>
+					<td>{{ concour.datefin ? concour.datefin|date('Y-m-d H:i:s') : '' }}</td>
+					<td>
+						<a href="{{ path('app_concours_edit', {'id': concour.id}) }}" class="btn btn-sm btn-warning">Edit</a>
+						<button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ concour.id }}">
+							Delete
+						</button>
+					</td>
+				</tr>
+				<!-- Modal for deletion confirmation -->
+				<div class="modal fade" id="deleteModal{{ concour.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ concour.id }}" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content shadow rounded">
+							<div class="modal-header">
+								<h5 class="modal-title" id="deleteModalLabel{{ concour.id }}">Confirm Deletion</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								Are you sure you want to delete this contest?
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+								<form method="post" action="{{ path('app_concours_delete', {'id': concour.id}) }}">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ concour.id) }}">
+									<button type="submit" class="btn btn-danger">Yes, delete</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% else %}
+				<tr>
+					<td colspan="6" class="text-center">No records found</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		<div class="text-center">
+			<a href="{{ path('app_concours_new') }}" class="btn btn-success">Create new</a>
+		</div>
+	</div>
+{% endblock %}

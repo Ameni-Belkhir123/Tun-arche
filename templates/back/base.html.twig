@@ -67,30 +67,29 @@
 				</li>
 				<li class="pc-item pc-hasmenu">
 					<a href="#!" class="pc-link">
-									<span class="pc-micon">
-										<i class="material-icons-two-tone">home</i>
-									</span>
+                <span class="pc-micon">
+                    <i class="material-icons-two-tone">home</i>
+                </span>
 						<span class="pc-mtext" data-i18n="Gestion Utilisateur">Gestion Utilisateur</span>
 						<span class="pc-arrow">
-										<i data-feather="chevron-right"></i>
-									</span>
+                    <i data-feather="chevron-right"></i>
+                </span>
 					</a>
 					<ul class="pc-submenu">
 						<li class="pc-item">
-							<a class="pc-link" href="{{path('app_user_index')}}" data-i18n="getions users">gestion users</a>
+							<a class="pc-link" href="{{ path('app_user_index') }}" data-i18n="getions users">gestion users</a>
 						</li>
-
 					</ul>
 				</li>
 				<li class="pc-item pc-hasmenu">
 					<a href="#!" class="pc-link">
-                                <span class="pc-micon">
-                                    <i class="material-icons-two-tone">ticket</i>
-                                </span>
+                <span class="pc-micon">
+                    <i class="material-icons-two-tone">ticket</i>
+                </span>
 						<span class="pc-mtext" data-i18n="Evenement/Billet">Evenement/Billet</span>
 						<span class="pc-arrow">
-                                    <i data-feather="chevron-right"></i>
-                                </span>
+                    <i data-feather="chevron-right"></i>
+                </span>
 					</a>
 					<ul class="pc-submenu">
 						<li class="pc-item">
@@ -104,16 +103,15 @@
 						</li>
 					</ul>
 				</li>
-
 				<li class="pc-item pc-hasmenu">
 					<a href="#!" class="pc-link">
-						<span class="pc-micon">
-							<i class="material-icons-two-tone">image</i>
-						</span>
+                <span class="pc-micon">
+                    <i class="material-icons-two-tone">image</i>
+                </span>
 						<span class="pc-mtext" data-i18n="Galerie &amp; Oeuvre">Galerie &amp; Oeuvre</span>
 						<span class="pc-arrow">
-							<i data-feather="chevron-right"></i>
-						</span>
+                    <i data-feather="chevron-right"></i>
+                </span>
 					</a>
 					<ul class="pc-submenu">
 						<li class="pc-item">
@@ -124,8 +122,25 @@
 						</li>
 					</ul>
 				</li>
-
-
+				<li class="pc-item pc-hasmenu">
+					<a href="#!" class="pc-link">
+                <span class="pc-micon">
+                    <i class="material-icons-two-tone">emoji_events</i>
+                </span>
+						<span class="pc-mtext" data-i18n="Concours &amp; Participation">Concours &amp; Participation</span>
+						<span class="pc-arrow">
+                    <i data-feather="chevron-right"></i>
+                </span>
+					</a>
+					<ul class="pc-submenu">
+						<li class="pc-item">
+							<a class="pc-link" href="{{ path('app_concours_index') }}" data-i18n="Gestion Concours">Gestion Concours</a>
+						</li>
+						<li class="pc-item">
+							<a class="pc-link" href="{{ path('app_participation_index') }}" data-i18n="Gestion Participations">Gestion Participations</a>
+						</li>
+					</ul>
+				</li>
 			</ul>
 
 

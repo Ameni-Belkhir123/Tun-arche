@@ -1,0 +1,64 @@
+{% extends 'front1/base.html.twig' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Voter pour le concours: "{{ concours.titre }}"</h1>
+        <form action="{{ path('front_concours_vote', {'id': concours.id}) }}" method="GET">
+            <div class="row mb-4 align-items-end">
+                <div class="col-md-4">
+                    <label for="sort_by" class="form-label">Trier par :</label>
+                    <select id="sort_by" name="sort_by" class="form-select">
+                        <option value="">-- Sélectionnez --</option>
+                        <option value="votes_asc" {% if sortBy == 'votes_asc' %} selected {% endif %}>Votes croissants</option>
+                        <option value="votes_desc" {% if sortBy == 'votes_desc' %} selected {% endif %}>Votes décroissants</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary w-100">Filtrer</button>
+                </div>
+                <div class="col-md-4">
+                    <a href="{{ path('front_concours_index') }}" class="btn btn-secondary w-100">Retour aux Concours</a>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            {% for participation in participations %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow" style="height: 350px;">
+                        {% if participation.imagePath %}
+                            <img src="data:image/*;base64,{{ participation.imagePath }}" class="card-img-top" alt="Artwork" style="height: 180px; object-fit: cover;">
+                        {% else %}
+                            <img src="{{ asset('images/default-image.jpg') }}" class="card-img-top" alt="Default Image" style="height: 180px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body text-center d-flex flex-column justify-content-between">
+                            <div>
+                                <h5 class="card-title">{{ participation.artist.fullName }}</h5>
+                                <p class="card-text">Votes: {{ participation.nbrVotes }}</p>
+                            </div>
+                            <div class="d-flex justify-content-center gap-2">
+                                {% if userVoteParticipationId is not null %}
+                                    {% if participation.id == userVoteParticipationId %}
+                                        <form action="{{ path('front_vote', {'id': participation.id}) }}" method="POST">
+                                            <button type="submit" class="btn btn-warning btn-sm">Retirer Vote</button>
+                                        </form>
+                                    {% else %}
+                                        <button type="button" class="btn btn-secondary btn-sm" disabled>Voter</button>
+                                    {% endif %}
+                                {% else %}
+                                    <form action="{{ path('front_vote', {'id': participation.id}) }}" method="POST">
+                                        <button type="submit" class="btn btn-success btn-sm">Voter</button>
+                                    </form>
+                                {% endif %}
+                                <a href="{{ path('front_participation_inspect', {'id': participation.id}) }}" class="btn btn-info btn-sm">Inspecter</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <p class="text-center">Aucune participation disponible pour ce concours.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

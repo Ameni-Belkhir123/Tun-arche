@@ -1,0 +1,20 @@
+{% extends "back/base.html.twig" %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="card shadow-lg p-4 rounded">
+            <div class="card-body">
+                <h1 class="card-title text-center">{{ concour.titre }}</h1>
+                <p class="text-muted text-center">
+                    Du <strong>{{ concour.datedebut|date('d/m/Y') }}</strong> au <strong>{{ concour.datefin|date('d/m/Y') }}</strong>
+                </p>
+                <p class="card-text">{{ concour.description }}</p>
+                <div class="text-center mt-4">
+                    <a href="{{ path('app_participer', {'id': concour.id}) }}" class="btn btn-primary">Participer</a>
+                    <a href="{{ path('h1') }}" class="btn btn-secondary">Retour à la liste</a>
+                    <a href="{{ path('app_concours_vote', {'id': concour.id}) }}" class="btn btn-primary">Voter</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
