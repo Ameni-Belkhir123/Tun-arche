@@ -44,41 +44,45 @@ class FrontConcoursController extends AbstractController
     }
 
     #[Route('/{id}/participer', name: 'front_participer', methods: ['GET', 'POST'])]
-    public function participer(Request $request, Concours $concours, EntityManagerInterface $entityManager, EmailService $emailService): Response
-    {
-        // Prevent duplicate participation
-        $existingParticipation = $entityManager->getRepository(Participation::class)
+    public function participer(
+        Request $request,
+        Concours $concours,
+        EntityManagerInterface $entityManager,
+        EmailService $emailService
+    ): Response {
+        // Prevent duplicate participation.
+        $existingParticipation = $entityManager->getRepository(\App\Entity\Participation::class)
             ->findOneBy(['artist' => $this->getUser(), 'concours' => $concours]);
         if ($existingParticipation) {
             $this->addFlash('error', 'Vous avez déjà participé à ce concours.');
             return $this->redirectToRoute('front_concours_show', ['id' => $concours->getId()]);
         }
 
-        $participation = new Participation();
+        $participation = new \App\Entity\Participation();
         $participation->setArtist($this->getUser());
         $participation->setConcours($concours);
 
-        $form = $this->createForm(ParticipationType::class, $participation);
+        // Create the form and pass the current user (for filtering the artworks).
+        $form = $this->createForm(\App\Form\ParticipationType::class, $participation, ['user' => $this->getUser()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $imageFile = $form->get('imageFile')->getData();
-            if ($imageFile) {
-                try {
-                    $fileContents = file_get_contents($imageFile->getPathname());
-                    $base64Image = base64_encode($fileContents);
-                    $participation->setImagePath($base64Image);
-                } catch (\Exception $e) {
-                    $this->addFlash('error', 'Erreur lors du traitement de l\'image.');
-                    return $this->redirectToRoute('front_participer', ['id' => $concours->getId()]);
-                }
+            // If an artwork is selected, get its image and remove any data URI prefix.
+            if ($participation->getOeuvre() !== null) {
+                $oeuvreImage = $participation->getOeuvre()->getImage();
+                // Remove the data URI prefix (e.g., "data:image/jpeg;base64,")
+                $pattern = '/^data:image\/[a-zA-Z]+;base64,/';
+                $cleanImage = preg_replace($pattern, '', $oeuvreImage);
+                $participation->setImagePath($cleanImage);
             }
             $entityManager->persist($participation);
             $entityManager->flush();
+
             $emailService->sendParticipationConfirmationEmail($participation);
             $this->addFlash('success', 'Votre participation a été soumise avec succès ! Veuillez vérifier votre email.');
             return $this->redirectToRoute('front_concours_show', ['id' => $concours->getId()]);
         }
+
         return $this->render('front/participation/participer.html.twig', [
             'concours' => $concours,
             'form' => $form->createView(),

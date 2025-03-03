@@ -1,52 +1,61 @@
-{% extends "front1/base.html.twig" %}
-
-{% block title %}Participer au Concours{% endblock %}
+{% extends 'front1/base.html.twig' %}
 
 {% block content %}
     <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow-lg">
-                    <div class="card-header text-center">
-                        <h2>Participer au Concours : {{ concours.titre }}</h2>
-                    </div>
-                    <div class="card-body">
-                        {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'p-4'}}) }}
-                        <div class="mb-3">
-                            {{ form_row(form.artist) }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form_label(form.artistEmail) }}<br>
-                            {{ form_widget(form.artistEmail) }}
-                            <button type="button" id="toggle-email" class="btn btn-outline-secondary mt-2">Utiliser un autre email</button>
-                        </div>
-                        <div class="mb-3">
-                            {{ form_row(form.oeuvre) }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form_row(form.imageFile) }}
-                        </div>
-                        <div class="text-center">
-                            {{ form_widget(form.submit) }}
-                        </div>
-                        {{ form_end(form) }}
-                    </div>
-                </div>
-            </div>
+        <h1 class="text-center mb-4">Participer au concours : {{ concours.titre }}</h1>
+
+        {# Toast message container (hidden by default) #}
+        <div id="alertMessage" class="alert alert-warning text-center" style="display:none;" role="alert">
+            Vous devez choisir une œuvre !
         </div>
+
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'p-4', 'id': 'participationForm'}}) }}
+        <div class="mb-3">
+            {{ form_row(form.artist) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.artistEmail) }}<br>
+            {{ form_widget(form.artistEmail) }}
+            <button type="button" id="toggle-email" class="btn btn-outline-secondary mt-2">Utiliser un autre email</button>
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.oeuvre) }}
+            {{ form_widget(form.oeuvre, {'attr': {'id': 'oeuvreSelect'}}) }}
+        </div>
+        <div class="text-center">
+            {{ form_widget(form.submit, {'attr': {'id': 'submitButton'}}) }}
+        </div>
+        {{ form_end(form) }}
     </div>
 
     {% block javascripts %}
         <script>
+            // Toggle the read-only state of the email field.
             document.getElementById('toggle-email').addEventListener('click', function() {
                 var emailField = document.getElementById('{{ form.artistEmail.vars.id }}');
-                if (emailField.readOnly) {
-                    emailField.readOnly = false;
+                emailField.readOnly = !emailField.readOnly;
+                if (!emailField.readOnly) {
                     emailField.classList.remove('form-control-plaintext');
                     emailField.focus();
-                } else {
-                    emailField.readOnly = true;
                 }
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                var oeuvreSelect = document.getElementById('oeuvreSelect');
+                var participationForm = document.getElementById('participationForm');
+                var alertMessage = document.getElementById('alertMessage');
+
+                participationForm.addEventListener('submit', function(e) {
+                    // If no artwork is selected, prevent submission and show the alert.
+                    if (oeuvreSelect.value.trim() === '') {
+                        e.preventDefault();
+                        alertMessage.style.display = 'block';
+                        // Optionally hide the alert after a few seconds:
+                        setTimeout(function(){
+                            alertMessage.style.display = 'none';
+                        }, 3000);
+                    }
+                });
             });
         </script>
     {% endblock %}

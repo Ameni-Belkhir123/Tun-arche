@@ -25,9 +25,6 @@ class ParticipationController extends AbstractController
         ]);
     }
 
-    /**
-     * Creates a new Participation for a given Concours.
-     */
     #[Route('/new/{concoursId}', name: 'app_participation_new', methods: ['GET', 'POST'])]
     public function new(
         int $concoursId,
