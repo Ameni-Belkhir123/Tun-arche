@@ -1,0 +1,103 @@
+{% extends "front1/base.html.twig" %}
+
+{% block content %}
+    <style>
+        .service-item {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f8f5e1;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-button a {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 5px;
+            background-color: #d4b38d;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .main-button a:hover {
+            background-color: #c19773;
+        }
+
+        .services {
+            padding: 50px 0;
+        }
+
+        .service-item h4 {
+            color: #333;
+        }
+
+        .service-item p {
+            color: #555;
+        }
+
+        .service-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+    </style>
+
+    <div class="container">
+        <h2 class="text-center mt-4">Nos Formations</h2>
+
+        <!-- Formulaire de recherche et tri -->
+        <form method="get" action="{{ path('app_formation_index') }}" class="mb-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" name="search" class="form-control" placeholder="Rechercher une formation..."
+                           value="{{ app.request.query.get('search') }}">
+                </div>
+                <div class="col-md-4">
+                    <select name="sort_by" class="form-control">
+                        <option value="">Trier par</option>
+                        <option value="datedebut" {% if app.request.query.get('sort_by') == 'datedebut' %}selected{% endif %}>Date de début</option>
+                        <option value="nbrplaces" {% if app.request.query.get('sort_by') == 'nbrplaces' %}selected{% endif %}>Nombre de places</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary">Filtrer</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="services section" id="services">
+            <div class="row">
+                {% for formation in formations %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="service-item">
+                            <div class="main-content">
+                                <!-- Display image using base64 string -->
+                                {% if formation.imageBase64 %}
+                                    <img src="data:image/jpeg;base64,{{ formation.imageBase64 }}" alt="{{ formation.titre }}">
+                                {% else %}
+                                    <img src="{{ asset('images/default-image.jpg') }}" alt="Image par défaut">
+                                {% endif %}
+                                <h4 class="text-primary">{{ formation.titre }}</h4>
+                                <p>{{ formation.description|slice(0, 80) ~ '...' }}</p>
+                                <div class="main-button">
+                                    <a href="{{ path('app_formation_show', { 'id': formation.id }) }}">Lire Plus</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-center text-muted">Aucune formation disponible pour le moment.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

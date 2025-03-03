@@ -1,0 +1,147 @@
+{% extends "back/base.html.twig" %}
+
+{% block body %}
+    <div class="container" style="margin-top: 120px;">
+        <h1 class="text-center mb-4">Formation Index</h1>
+
+        <!-- Formation Table Card -->
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover mx-auto" style="max-width: 90%; width: 800px;">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Titre</th>
+                            <th>Description</th>
+                            <th>Datedebut</th>
+                            <th>Datefin</th>
+                            <th>Nbrplaces</th>
+                            <th>Link</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for formation in formations %}
+                            <tr>
+                                <td>{{ formation.id }}</td>
+                                <td>{{ formation.titre }}</td>
+                                <td>{{ formation.description }}</td>
+                                <td>{{ formation.datedebut ? formation.datedebut|date('Y-m-d H:i:s') : '' }}</td>
+                                <td>{{ formation.datefin ? formation.datefin|date('Y-m-d H:i:s') : '' }}</td>
+                                <td>{{ formation.nbrplaces }}</td>
+                                <td>{{ formation.link }}</td>
+                                <td>
+                                    <button onclick="deleteFormation({{ formation.id }}, '{{ csrf_token('delete' ~ formation.id) }}')" class="btn btn-danger btn-sm">Delete</button>
+                                    <a href="{{ path('app_formation_edit', {'id': formation.id}) }}" class="btn btn-warning btn-sm">Edit</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="8" class="text-center">No records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="{{ path('app_formation_new') }}" class="btn btn-primary">Create New</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Evaluation Charts Card -->
+        <div class="card shadow">
+            <div class="card-body">
+                {% for formation in formations %}
+                    {% set notes = formation.evaluation|map(evaluation => evaluation.note) %}
+                    <div class="mb-4 text-center">
+                        <h5>Variation des notes pour "{{ formation.titre }}"</h5>
+                        <div class="d-flex justify-content-center">
+                            <canvas id="chart-{{ formation.id }}" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function deleteFormation(formationId, token) {
+            fetch(`/formation/${formationId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ _token: token })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.requiresConfirmation) {
+                        if (confirm(data.message)) {
+                            forceDeleteFormation(formationId, token);
+                        }
+                    } else if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                });
+        }
+
+        function forceDeleteFormation(formationId, token) {
+            fetch(`/formation/${formationId}/force-delete`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ _token: token })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    location.reload();
+                });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            {% for formation in formations %}
+            {% set notes = formation.evaluation|map(evaluation => evaluation.note) %}
+            const ctx{{ formation.id }} = document.getElementById('chart-{{ formation.id }}').getContext('2d');
+            new Chart(ctx{{ formation.id }}, {
+                type: 'line',
+                data: {
+                    labels: ["Session 1", "Session 2", "Session 3", "Session 4", "Session 5", "Session 6", "Session 7", "Session 8"],
+                    datasets: [{
+                        label: 'Notes',
+                        data: {{ notes|json_encode|raw }},
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 2,
+                        fill: true,
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 5,
+                            min: 1,
+                            ticks: {
+                                stepSize: 1,
+                                font: { size: 10 }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: { size: 10 }
+                            }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+            {% endfor %}
+        });
+    </script>
+{% endblock %}
