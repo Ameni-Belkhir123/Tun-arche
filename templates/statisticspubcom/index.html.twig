@@ -1,0 +1,191 @@
+{% extends 'back/base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Publication & Comment Statistics</h1>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Publications</h5>
+                        <p class="card-text display-4">{{ totalPublications }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Comments</h5>
+                        <p class="card-text display-4">{{ totalComments }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-info mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Interactions</h5>
+                        <p class="card-text display-4">{{ totalLikes + totalUnlikes + (totalComments) }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        Most Commented Posts
+                    </div>
+                    <div class="card-body">
+                        <canvas id="mostCommentedChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        Interaction Percentage per Publication
+                    </div>
+                    <div class="card-body">
+                        <canvas id="interactionPercentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        Most vs Least Interacted Publications
+                    </div>
+                    <div class="card-body">
+                        <canvas id="interactionBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Interactions per Day for a Publication
+                    </div>
+                    <div class="card-body">
+                        <select id="publicationSelect" class="form-control mb-3">
+                            <option value="">Select a publication</option>
+                            {% for item in dropdownData %}
+                                <option value="{{ item.interactionsPerDay }}">{{ item.titre }} ({{ item.interactionsPerDay }} per day)</option>
+                            {% endfor %}
+                        </select>
+                        <div id="interactionResult"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    {% set mostCommentedLabels = mostCommented|keys %}
+    {% set mostCommentedValues = [] %}
+    {% for label in mostCommentedLabels %}
+        {% set mostCommentedValues = mostCommentedValues|merge([mostCommented[label]]) %}
+    {% endfor %}
+
+    {% set interactionPercentLabels = pubInteractionPercents|keys %}
+    {% set interactionPercentValues = [] %}
+    {% for label in interactionPercentLabels %}
+        {% set interactionPercentValues = interactionPercentValues|merge([pubInteractionPercents[label]]) %}
+    {% endfor %}
+
+    {% set interactionLabels = pubInteractions|keys %}
+    {% set interactionValues = [] %}
+    {% for label in interactionLabels %}
+        {% set interactionValues = interactionValues|merge([pubInteractions[label]]) %}
+    {% endfor %}
+
+    <script>
+
+        const ctxMostCommented = document.getElementById('mostCommentedChart').getContext('2d');
+        const mostCommentedChart = new Chart(ctxMostCommented, {
+            type: 'bar',
+            data: {
+                labels: {{ mostCommentedLabels|json_encode|raw }},
+                datasets: [{
+                    label: 'Number of Comments',
+                    data: {{ mostCommentedValues|json_encode|raw }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        const ctxInteractionPercent = document.getElementById('interactionPercentChart').getContext('2d');
+        const interactionPercentChart = new Chart(ctxInteractionPercent, {
+            type: 'pie',
+            data: {
+                labels: {{ interactionPercentLabels|json_encode|raw }},
+                datasets: [{
+                    data: {{ interactionPercentValues|json_encode|raw }},
+                    backgroundColor: [
+                        'rgba(255, 159, 64, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 205, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                    ],
+                    borderColor: 'rgba(255, 255, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+            }
+        });
+
+        const ctxInteractionBar = document.getElementById('interactionBarChart').getContext('2d');
+        const interactionBarChart = new Chart(ctxInteractionBar, {
+            type: 'bar',
+            data: {
+                labels: {{ interactionLabels|json_encode|raw }},
+                datasets: [{
+                    label: 'Interactions (Likes+Dislikes+Comments)',
+                    data: {{ interactionValues|json_encode|raw }},
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        const publicationSelect = document.getElementById('publicationSelect');
+        const interactionResult = document.getElementById('interactionResult');
+
+        publicationSelect.addEventListener('change', function() {
+            const value = this.value;
+            if (value) {
+                interactionResult.innerHTML = '<p><strong>Interactions per Day:</strong> ' + value + '</p>';
+            } else {
+                interactionResult.innerHTML = '';
+            }
+        });
+    </script>
+{% endblock %}

@@ -74,9 +74,9 @@ class AuthAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($this->urlGenerator->generate('app_user_index'));
         } elseif (in_array('ROLE_USER', $roles) || in_array('ROLE_ARTIST', $roles)) {
             // NEW: Redirect non-admin users to the event front page
-            return new RedirectResponse($this->urlGenerator->generate('app_event_indexfront'));
+            return new RedirectResponse($this->urlGenerator->generate('app_front_home'));
         }
-        return new RedirectResponse($this->urlGenerator->generate('default_route'));
+        return new RedirectResponse($this->urlGenerator->generate('app_front_home'));
     }
 
     protected function getLoginUrl(Request $request): string

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+
+<title>Edit Commantaire</title>
+
+{% block body %}
+    <h1>Edit Commantaire</h1>
+
+    {{ include('com/_form.html.twig', {'button_label': 'Update'}) }}
+
+   <a href="{{ path('app_com_index') }}" class="btn btn-primary">
+    <i class="fas fa-arrow-left"></i> Back to List
+</a>
+
+    {{ include('com/_delete_form.html.twig') }}
+{% endblock %}

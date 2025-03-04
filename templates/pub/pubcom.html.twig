@@ -1,0 +1,188 @@
+{% extends "front1/base.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Publication Details Card */
+        .publication-details {
+            margin-top: 30px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .publication-details h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        .publication-img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .publication-info p {
+            font-size: 1rem;
+            color: #333;
+        }
+        .publication-info strong {
+            color: #555;
+        }
+        hr {
+            margin: 30px 0;
+        }
+        /* Comments Section */
+        .comment-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: #007bff;
+        }
+        .comments-list {
+            list-style: none;
+            padding: 0;
+        }
+        .comment-card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        .comment-meta {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+        .comment-meta i {
+            margin-right: 5px;
+        }
+        .comment-text {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .comment-actions {
+            font-size: 0.9rem;
+        }
+        .comment-actions button {
+            background: none;
+            border: none;
+            color: #007bff;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+        .comment-actions button:hover {
+            text-decoration: underline;
+        }
+        .comment-actions a {
+            color: #007bff;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+        .comment-actions a:hover {
+            text-decoration: underline;
+        }
+        /* Comment Form */
+        .comment-form {
+            background: #f1f1f1;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        .comment-form textarea {
+            width: 100%;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ced4da;
+            margin-bottom: 10px;
+        }
+        .comment-form button {
+            background-color: #28a745;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        .comment-form button:hover {
+            background-color: #218838;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container publication-details">
+        <h1>{{ publication.titre }}</h1>
+        {% if publication.image %}
+            <img src="{{ publication.image }}" alt="{{ publication.titre }}" class="publication-img">
+        {% endif %}
+        <div class="publication-info">
+            <p>{{ publication.description }}</p>
+            <p><strong>Date:</strong> {{ publication.dateAct ? publication.dateAct|date('Y-m-d') : 'N/A' }}</p>
+        </div>
+        <hr>
+        <div class="comment-section">
+            <h3>Comments ({{ publication.commantaires|length }})</h3>
+            <ul class="comments-list">
+                {% for comment in publication.commantaires %}
+                    <li class="comment-card">
+                        <div class="comment-meta">
+                            <i class="fas fa-user"></i>
+                            <strong>{{ comment.getUser() ? comment.getUser().fullName : 'Anonymous' }}</strong>
+                            {% if comment.getUser() %}
+                                - <em>{{ comment.getUser().role }}</em>
+                            {% endif %}
+                            - {{ comment.date|date('Y-m-d H:i') }}
+                        </div>
+                        <div class="comment-text">
+                            {{ comment.contenu }}
+                        </div>
+                        <div class="comment-actions">
+                            <button class="like-btn" data-id="{{ comment.id }}">
+                                <i class="fas fa-thumbs-up"></i> <span class="like-count">{{ comment.likes }}</span>
+                            </button>
+                            <button class="dislike-btn" data-id="{{ comment.id }}">
+                                <i class="fas fa-thumbs-down"></i> <span class="dislike-count">{{ comment.dislikes|default(0) }}</span>
+                            </button>
+                            {# Uncomment and define route if front comment editing is implemented
+            {% if app.user and comment.getUser() and comment.getUser().id == app.user.id %}
+              <a href="{{ path('front_comment_edit', {'id': comment.id}) }}" class="edit-btn">
+                <i class="fas fa-pen"></i> Edit
+              </a>
+            {% endif %}
+                            #}
+                        </div>
+                    </li>
+                {% else %}
+                    <li>No comments yet.</li>
+                {% endfor %}
+            </ul>
+            <hr>
+            <h4>Add a Comment</h4>
+            <div class="comment-form">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button type="submit">Submit Comment</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Demo for like/dislike functionality. Replace with AJAX for real functionality.
+        document.querySelectorAll('.like-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const countSpan = this.querySelector('.like-count');
+                countSpan.textContent = parseInt(countSpan.textContent) + 1;
+            });
+        });
+        document.querySelectorAll('.dislike-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const countSpan = this.querySelector('.dislike-count');
+                countSpan.textContent = parseInt(countSpan.textContent) + 1;
+            });
+        });
+    </script>
+{% endblock %}

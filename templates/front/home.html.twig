@@ -1,0 +1,100 @@
+{% extends 'front1/base.html.twig' %}
+
+{% block title %}User/Artist Home{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Welcome to the Home Page!</h1>
+        <div class="row justify-content-center">
+            {# Card 1: Explore #}
+            <div class="col-md-2 mx-3 mb-3">
+                <div class="card text-center glow-blue" style="cursor: pointer;">
+                    <div class="card-body">
+                        <h5 class="card-title">Explore</h5>
+                        <p class="card-text">Discover new creations.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ path('front_galerie_index') }}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            {# Card 2: Formations #}
+            <div class="col-md-2 mx-1 mb-1">
+                <div class="card text-center glow-green" style="cursor: pointer;">
+                    <div class="card-body">
+                        <h5 class="card-title">Formations</h5>
+                        <p class="card-text">Learn new skills.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ path('front_formation_index') }}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            {# Card 3: Concours #}
+            <div class="col-md-2 mx-3 mb-3">
+                <div class="card text-center glow-red" style="cursor: pointer;">
+                    <div class="card-body">
+                        <h5 class="card-title">Concours</h5>
+                        <p class="card-text">Join competitions.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ path('front_concours_index') }}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            {# Card 4: Evenements #}
+            <div class="col-md-2 mx-3 mb-3">
+                <div class="card text-center glow-yellow" style="cursor: pointer;">
+                    <div class="card-body">
+                        <h5 class="card-title">Événements</h5>
+                        <p class="card-text">Stay up-to-date</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ path('app_event_indexfront') }}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            {# Card 5: Blog #}
+            <div class="col-md-2 mx-3 mb-3">
+                <div class="card text-center glow-purple" style="cursor: pointer;">
+                    <div class="card-body">
+                        <h5 class="card-title">Blog</h5>
+                        <p class="card-text">Read and share insights.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ path('front_blog_index') }}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <style>
+        .card {
+            border: none;
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        /* Glow for each card */
+        .glow-blue {
+            box-shadow: 0 0 10px rgba(0, 0, 255, 0.6);
+        }
+        .glow-green {
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+        }
+        .glow-red {
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+        }
+        .glow-yellow {
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.6);
+        }
+        .glow-purple {
+            box-shadow: 0 0 10px rgba(128, 0, 128, 0.6);
+        }
+    </style>
+{% endblock %}

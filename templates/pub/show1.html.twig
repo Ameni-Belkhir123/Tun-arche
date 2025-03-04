@@ -1,0 +1,384 @@
+{% extends "front1/base.html.twig" %}
+<!-- shows each publication on its own / front side -->
+{% block body %}
+	<section id="blog-posts" class="py-5">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-8">
+					<article class="card shadow-sm p-4 position-relative">
+						<div class="text-center mb-4">
+							{% if publication.image %}
+								<img src="{{ asset('uploads/images/' ~ publication.image) }}" alt="Post Image" class="img-fluid rounded">
+							{% else %}
+								<span>Aucune image disponible</span>
+							{% endif %}
+							<span class="post-date position-absolute top-0 start-0 bg-primary text-white p-2 rounded">{{ publication.dateAct ? publication.dateAct|date('Y-m-d') : '' }}</span>
+						</div>
+
+						<div class="post-content d-flex flex-column">
+							<h3 class="post-title text-center text-primary fw-bold mb-4">{{ publication.titre }}</h3>
+							<p class="post-description text-center text-secondary fs-5 mb-4">{{ publication.description }}</p>
+							<hr>
+
+							<!-- Système de notation -->
+							<div class="text-center mb-4">
+								<span class="rating">
+									{% for i in 1..5 %}
+										<i class="fas fa-star star-icon text-muted" data-value="{{ i }}"></i>
+									{% endfor %}
+								</span>
+								<p id="rating-feedback" class="text-success mt-2"></p>
+							</div>
+							<!-- Liste des commentaires -->
+							<div class="mb-5">
+								<div class="section-title section-title-sm position-relative pb-3 mb-4">
+									<h3 class="mb-0">Commentaires</h3>
+								</div>
+								<ul id="comment-list" class="list-group mb-4">
+									{% for commantaire in publication.commantaires %}
+										<li class="list-group-item d-flex justify-content-between align-items-center">
+											<p class="comment-content">{{ commantaire.contenu }}</p>
+											<div>
+												<!-- Bouton de traduction -->
+												
+												<a href="#" class="translate-link" data-content="{{ commantaire.contenu }}" style="text-decoration: underline;">Traduire en arabe</a>
+												<!-- Date de publication -->
+												<span class="comment-date" data-date="{{ commantaire.date|date('c') }}"></span>
+											</div>
+										</li>
+									{% endfor %}
+								</ul>
+							</div>
+
+							<!-- Formulaire d'ajout de commentaire (AJAX) -->
+							<div class="bg-light rounded p-5 mb-4">
+								<div class="section-title section-title-sm position-relative pb-3 mb-4">
+									<h3 class="mb-4 text-primary fw-bold">
+										<i class="fas fa-comments"></i>
+										Laisser un commentaire
+									</h3>
+								</div>
+								<form id="comment-form">
+									<div class="row g-3">
+										<div class="col-12">
+											<textarea id="comment-content" class="form-control bg-white border-0" rows="5" placeholder="Écrire un commentaire..."></textarea>
+										</div>
+										<div class="col-12 text-end">
+											<button type="submit" class="btn btn-success">
+												<i class="fas fa-save"></i>
+												Ajouter un commentaire
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+
+							<!-- Boutons Like et Unlike -->
+							<div class="d-flex justify-content-between align-items-center mt-4">
+								<div>
+									<button id="like-button" class="btn btn-primary me-2" data-token="{{ csrf_token('like' ~ publication.id) }}">
+										<i class="fas fa-thumbs-up"></i>
+										Like
+									</button>
+									<button id="unlike-button" class="btn btn-danger" data-token="{{ csrf_token('unlike' ~ publication.id) }}">
+										<i class="fas fa-thumbs-down"></i>
+										Unlike
+									</button>
+								</div>
+								<div>
+									<span id="likes-count" class="badge bg-primary">{{ publication.likes }}</span>
+									<span id="unlikes-count" class="badge bg-danger">{{ publication.unlikes }}</span>
+									<span class="ms-3">
+										<i class="fas fa-comments"></i>
+										{{ publication.commantaires|length }}</span>
+								</div>
+							</div>
+
+							<!-- Bouton de partage -->
+							<div class="text-center mt-4">
+								<button id="share-button" class="btn btn-info">
+									<i class="fas fa-share-alt"></i>
+									Partager
+								</button>
+							</div>
+						</div>
+					</article>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Modal de confirmation de partage -->
+	<div id="share-modal" class="modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Confirmation de partage</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>Voulez-vous copier le lien de cette page ?</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="confirm-share">OK</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel-share">Annuler</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Script AJAX pour Like -->
+	<script>
+		document.getElementById('like-button').addEventListener('click', function () {
+			const token = this.getAttribute('data-token');
+			fetch('{{ path('app_pub_like', {'id': publication.id}) }}', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-Requested-With': 'XMLHttpRequest',
+					'X-CSRF-TOKEN': token
+				}
+			}).then(response => response.json()).then(data => {
+				document.getElementById('likes-count').innerText = data.likes;
+				document.getElementById('unlikes-count').innerText = data.unlikes;
+			}).catch(error => console.error('Error:', error));
+		});
+	</script>
+
+	<!-- Script AJAX pour Unlike -->
+	<script>
+		document.getElementById('unlike-button').addEventListener('click', function () {
+			const token = this.getAttribute('data-token');
+			fetch('{{ path('app_pub_unlike', {'id': publication.id}) }}', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-Requested-With': 'XMLHttpRequest',
+					'X-CSRF-TOKEN': token
+				}
+			}).then(response => response.json()).then(data => {
+				document.getElementById('likes-count').innerText = data.likes;
+				document.getElementById('unlikes-count').innerText = data.unlikes;
+			}).catch(error => console.error('Error:', error));
+		});
+	</script>
+
+	<!-- Script AJAX pour le formulaire de commentaire -->
+	<script>
+		document.getElementById('comment-form').addEventListener('submit', function (event) {
+			event.preventDefault();
+
+			let commentContent = document.getElementById('comment-content').value.trim();
+
+			if (commentContent === '') {
+				alert('Le commentaire ne peut pas être vide.');
+				return;
+			}
+
+			fetch('{{ path('app_com_new', { 'id': publication.id }) }}', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ commentaire: commentContent })
+			}).then(response => response.json()).then(data => {
+				if (data.message === 'Commentaire ajouté avec succès.') {
+					let commentList = document.getElementById('comment-list');
+					let newComment = document.createElement('li');
+					newComment.className = 'list-group-item d-flex justify-content-between align-items-center';
+					newComment.innerHTML = `
+						<p class="comment-content">${data.commentaire.contenu}</p>
+						<div>
+							<a href="#" class="translate-link" data-content="${data.commentaire.contenu}" style="text-decoration: underline;">Traduire en arabe</a>
+							<span class="comment-date" data-date="${data.commentaire.date}"></span>
+						</div>
+					`;
+					commentList.appendChild(newComment);
+					document.getElementById('comment-content').value = '';
+
+					// Mettre à jour le nombre de commentaires
+					let commentCount = document.querySelector('.fa-comments').nextSibling;
+					commentCount.textContent = ` ${parseInt(commentCount.textContent.trim()) + 1}`;
+
+					// Mettre à jour la date relative du nouveau commentaire
+					updateRelativeDates();
+				} else {
+					alert('Erreur : ' + data.message);
+				}
+			}).catch(error => console.error('Erreur:', error));
+		});
+	</script>
+
+	<!-- Script pour le bouton de partage -->
+	<script>
+		document.getElementById('share-button').addEventListener('click', function () {
+			$('#share-modal').modal('show');
+		});
+
+		document.getElementById('confirm-share').addEventListener('click', function () {
+			const url = window.location.href;
+			navigator.clipboard.writeText(url).then(() => {
+				alert('Lien copié dans le presse-papiers.');
+				$('#share-modal').modal('hide');
+			}).catch(err => {
+				console.error('Erreur lors de la copie du lien :', err);
+			});
+		});
+
+		document.getElementById('cancel-share').addEventListener('click', function () {
+			$('#share-modal').modal('hide');
+		});
+	</script>
+
+	<!-- Script pour la traduction des commentaires -->
+	<script>
+		document.addEventListener('click', function (event) {
+			if (event.target.classList.contains('translate-link')) {
+				event.preventDefault();
+				const link = event.target;
+				const originalContent = link.getAttribute('data-content');
+				const commentElement = link.closest('li').querySelector('.comment-content');
+
+				fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(originalContent)}&langpair=fr|ar`)
+					.then(response => response.json())
+					.then(data => {
+						commentElement.textContent = data.responseData.translatedText;
+						link.textContent = 'Voir l\'original';
+						link.classList.remove('translate-link');
+						link.classList.add('original-link');
+					})
+					.catch(error => console.error('Erreur de traduction:', error));
+			} else if (event.target.classList.contains('original-link')) {
+				event.preventDefault();
+				const link = event.target;
+				const originalContent = link.getAttribute('data-content');
+				const commentElement = link.closest('li').querySelector('.comment-content');
+
+				commentElement.textContent = originalContent;
+				link.textContent = 'Traduire en arabe';
+				link.classList.remove('original-link');
+				link.classList.add('translate-link');
+			}
+		});
+	</script>
+
+	<!-- Script AJAX pour le système de notation -->
+	<script>
+		document.querySelectorAll('.star-icon').forEach(star => {
+			star.addEventListener('click', function () {
+				const rating = this.getAttribute('data-value');
+
+				document.querySelectorAll('.star-icon').forEach(s => {
+					if (s.getAttribute('data-value') <= rating) {
+						s.classList.remove('text-muted');
+						s.classList.add('text-warning');
+					} else {
+						s.classList.remove('text-warning');
+						s.classList.add('text-muted');
+					}
+				});
+
+				fetch('{{ path('app_pub_rate', {'id': publication.id}) }}', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'X-Requested-With': 'XMLHttpRequest',
+					},
+					body: JSON.stringify({ rating: rating }),
+				})
+				.then(response => response.json())
+				.then(data => {
+					if (data.success) {
+						document.getElementById('rating-feedback').innerText = 'Merci pour votre note !';
+					} else {
+						document.getElementById('rating-feedback').innerText = 'Erreur lors de l\'enregistrement de la note.';
+					}
+				})
+				.catch(error => {
+					console.error('Erreur:', error);
+					document.getElementById('rating-feedback').innerText = 'Erreur lors de l\'enregistrement de la note.';
+				});
+			});
+		});
+	</script>
+
+	<!-- Script pour afficher et mettre à jour la date relative des commentaires -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.3.0/luxon.min.js"></script>
+	<script>
+		// Fonction pour formater la date relative
+		function formatRelativeDate(dateIso) {
+			const DateTime = luxon.DateTime;
+			const dt = DateTime.fromISO(dateIso);
+
+			// Vérifie si la date est valide
+			if (!dt.isValid) {
+				return 'À l\'instant'; // Retourne une valeur par défaut si la date est invalide
+			}
+
+			const now = DateTime.now();
+			const diff = now.diff(dt, ['years', 'months', 'days', 'hours', 'minutes']).toObject();
+
+			if (diff.years > 0) {
+				return `Il y a ${Math.floor(diff.years)} an(s)`;
+			} else if (diff.months > 0) {
+				return `Il y a ${Math.floor(diff.months)} mois`;
+			} else if (diff.days > 0) {
+				return `Il y a ${Math.floor(diff.days)} jour(s)`;
+			} else if (diff.hours > 0) {
+				return `Il y a ${Math.floor(diff.hours)} heure(s)`;
+			} else if (diff.minutes > 0) {
+				return `Il y a ${Math.floor(diff.minutes)} minute(s)`;
+			} else {
+				return 'À l\'instant';
+			}
+		}
+
+		// Fonction pour mettre à jour toutes les dates relatives
+		function updateRelativeDates() {
+			document.querySelectorAll('.comment-date').forEach(function (element) {
+				const dateIso = element.getAttribute('data-date');
+				element.textContent = formatRelativeDate(dateIso);
+			});
+		}
+
+		// Mettre à jour les dates relatives au chargement de la page
+		document.addEventListener('DOMContentLoaded', function () {
+			updateRelativeDates();
+		});
+
+		// Mettre à jour les dates relatives toutes les minutes
+		setInterval(updateRelativeDates, 60000); // 60000 ms = 1 minute
+	</script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<!-- Bouton de partage -->
+<div class="text-center mt-4">
+    
+
+    <!-- Bouton pour LinkedIn -->
+   <div class="text-center mt-4">
+    <!-- Bouton pour Facebook (icône seulement) -->
+    <a href="https://www.facebook.com/dialog/share?app_id=YOUR_APP_ID&display=popup&href={{ url('app_pub_show', {'id': publication.id}, true) | url_encode }}&redirect_uri={{ url('app_pub_show', {'id': publication.id}, true) | url_encode }}" 
+   target="_blank" class="btn btn-primary btn-icon">
+    <i class="fab fa-facebook-f"></i>
+</a>
+
+    <!-- Bouton pour Twitter (icône seulement) -->
+    <a href="https://twitter.com/intent/tweet?url={{ url('app_pub_show', {'id': publication.id}, true) }}&text={{ publication.titre }}" target="_blank" class="btn btn-info btn-icon">
+        <i class="fab fa-twitter"></i>
+    </a>
+
+    <!-- Bouton pour LinkedIn (icône seulement) -->
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ url('app_pub_show', {'id': publication.id}, true) }}&title={{ publication.titre }}" target="_blank" class="btn btn-secondary btn-icon">
+        <i class="fab fa-linkedin-in"></i>
+    </a>
+
+    
+    <!-- Bouton pour Instagram (Partager dans une story - icône seulement) -->
+    <a href="https://www.instagram.com/create/story?media={{ asset('uploads/publications/' ~ publication.image) | url_encode }}" target="_blank" class="btn btn-warning btn-icon">
+        <i class="fab fa-instagram"></i>
+    </a>
+</div>
+
+{% endblock %}
