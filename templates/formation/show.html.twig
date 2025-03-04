@@ -63,13 +63,13 @@
                             {% if formation.nbrplaces > 0 %}Participer{% else %}Formation complète{% endif %}
                         </button>
 
-                        <!-- Ajouter le bouton Accéder -->
+                        <!-- Bouton Accéder -->
                         {% if formation.datedebut|date("Y-m-d") == "now"|date("Y-m-d") %}
-                            <a href="{{ formation.link }}" class="btn btn-saumon mt-4" target="_blank">Accéder à la formation</a>
+                            <a href="{{ formation.link }}" class="btn btn-success mt-4" target="_blank">Accéder à la formation</a>
                         {% elseif formation.datedebut|date("Y-m-d") < "now"|date("Y-m-d") and formation.datefin|date("Y-m-d") < "now"|date("Y-m-d") %}
-                            <button class="btn btn-saumon mt-4" disabled>Formation terminée</button>
+                            <button class="btn btn-danger mt-4" disabled>Formation terminée</button>
                         {% else %}
-                            <button class="btn btn-saumon mt-4" disabled>Accéder à la formation</button>
+                            <button class="btn btn-secondary mt-4" disabled>Accéder à la formation</button>
                         {% endif %}
 
                         <!-- Formulaire d'évaluation -->
@@ -238,8 +238,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        messageDiv.innerHTML = `<div class='alert alert-success'>${data.message}</div>`
-                        ;
+                        messageDiv.innerHTML = `<div class='alert alert-success'>${data.message}</div>`;
 
                         if (commentsSection) {
                             let newComment = document.createElement('div');
@@ -346,6 +345,24 @@
         .btn-emoji {
             font-size: 1.2rem;
             padding: 5px 10px;
+        }
+
+        .btn-success {
+            background-color: #28a745; /* Vert */
+            border: none;
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #dc3545; /* Rouge */
+            border: none;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d; /* Gris */
+            border: none;
+            color: white;
         }
     </style>
 {% endblock %}
