@@ -3,23 +3,24 @@
 {% block title %}Concours{% endblock %}
 
 {% block content %}
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Les Concours</h1>
+    <div class="container py-5">
+        <h1 class="text-center mb-5">Les Concours</h1>
+
         <div class="row">
             {% for concours in concours %}
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100">
-                        <div class="card-body p-3">
-                            <h5 class="card-title">{{ concours.titre }}</h5>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card concours-card text-center">
+                        <!-- Circular Icon -->
+                        <div class="concours-icon">
+                            <img src="{{ asset('assets/11.jpg') }}" alt="icon">
+                        </div>
+                        
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold">{{ concours.titre }}</h5>
                             <p class="card-text">
                                 {{ concours.description|striptags|length > 100 ? concours.description|striptags|slice(0, 100) ~ '...' : concours.description|striptags }}
                             </p>
-                        </div>
-                        <div class="card-footer text-muted py-2">
-                            Du {{ concours.dateDebut|date('d/m/Y') }} au {{ concours.dateFin|date('d/m/Y') }}
-                        </div>
-                        <div class="card-footer text-center py-2">
-                            <a href="{{ path('front_concours_show', {'id': concours.id}) }}" class="btn btn-primary btn-sm">Voir plus</a>
+                            <a href="{{ path('front_concours_show', {'id': concours.id}) }}" class="btn btn-primary btn-sm">Plus</a>
                         </div>
                     </div>
                 </div>
@@ -30,4 +31,45 @@
             {% endfor %}
         </div>
     </div>
+
+    <style>
+        /* Custom CSS for the cards */
+        .concours-card {
+            position: relative;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        .concours-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Circular Icon Styling */
+        .concours-icon {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #7b5ef6;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .concours-icon img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .card-body {
+            margin-top: 30px;
+        }
+    </style>
 {% endblock %}
